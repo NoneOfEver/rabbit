@@ -14,6 +14,7 @@
 #include "esp_bt_main.h"
 #include "esp_gatt_common_api.h"
 #include "nvs_flash.h"
+#include "ble.h"
 
 #define TAG "BLE_CFG"
 
@@ -82,7 +83,8 @@ static uint16_t gl_gatts_if = ESP_GATT_IF_NONE;
 static uint16_t gl_conn_id = 0xFFFF;
 
 //char1的值
-static char sv1_char1_value[20] = {0};
+// static char sv1_char1_value[20] = {0};
+static uint8_t sv1_char1_value[20] = {0};
 //char2的值
 static char sv1_char2_value[20] = {0};
 
@@ -252,23 +254,46 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
                 // 限制写入长度，防止超出数组大小
                 uint8_t len = param->write.len > 20 ? 20 : param->write.len;
 
-                if (param->write.handle == sv1_handle_table[SV1_CH1_IDX_CHAR_VAL]) {   //特征1的值
-                    memcpy(sv1_char1_value, param->write.value, len);
-
-                    // 打印收到的消息（以字符串形式，如果是纯文本）
-                    char msg[21] = {0}; // +1 保证结尾 \0
-                    memcpy(msg, sv1_char1_value, len);
-                    ESP_LOGI(TAG, "Received message: %s", msg);
+        if (param->write.handle == sv1_handle_table[SV1_CH1_IDX_CHAR_VAL]) {   //特征1的值
+            memcpy(sv1_char1_value, param->write.value, len);
+            
+            // 正确打印接收到的数据
+            ESP_LOGI(TAG, "Received message on CH1, length: %d", len);
+            // 手动打印十六进制数据
+            printf("CH1 Data: ");
+            for(int i = 0; i < len; i++) {
+                printf("%02x ", sv1_char1_value[i]);
+            }
+            printf("\n");
+            
+            // 通过特征2将接收到的数据发送回去
+            // ble_send_ch2_data(sv1_char1_value, len);
+            // 默认答复 1
+            const uint8_t ack[1] = {1};
+            ble_send_ch2_data(ack,1);
+        }
+                else if(param->write.handle == sv1_handle_table[SV1_CH1_IDX_CHAR_CFG])   //特征1客户端特征配置
+                {
+                    sv1_ch1_client_cfg[0] = param->write.value[0];
+                    sv1_ch1_client_cfg[1] = param->write.value[1];
+                    ESP_LOGI(TAG, "CH1 client config updated: 0x%02x%02x", sv1_ch1_client_cfg[1], sv1_ch1_client_cfg[0]);
                 }
                 else if(param->write.handle == sv1_handle_table[SV1_CH2_IDX_CHAR_CFG])   //特征2客户端特征配置
                 {
                     sv1_ch2_client_cfg[0] = param->write.value[0];
                     sv1_ch2_client_cfg[1] = param->write.value[1];
+                    ESP_LOGI(TAG, "CH2 client config updated: 0x%02x%02x", sv1_ch2_client_cfg[1], sv1_ch2_client_cfg[0]);
                 }
-                else if(param->write.handle == sv1_handle_table[SV1_CH1_IDX_CHAR_VAL])   //特征1的值
+                else if(param->write.handle == sv1_handle_table[SV1_CH2_IDX_CHAR_VAL])   //特征2的值
                 {
-                    sv1_char2_value[0] = param->write.value[0];
-                    sv1_char2_value[1] = param->write.value[1];
+                    memcpy(sv1_char2_value, param->write.value, len);
+                    ESP_LOGI(TAG, "Received message on CH2, length: %d", len);
+                    // 手动打印十六进制数据
+                    printf("CH2 Data: ");
+                    for(int i = 0; i < len; i++) {
+                        printf("%02x ", (uint8_t)sv1_char2_value[i]);
+                    }
+                    printf("\n");
                 }
 
                 if (param->write.need_rsp){
@@ -292,7 +317,7 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
             break;
         case ESP_GATTS_CONNECT_EVT:     //收到连接事件
             ESP_LOGI(TAG, "ESP_GATTS_CONNECT_EVT, conn_id = %d", param->connect.conn_id);
-            esp_log_buffer_hex(TAG, param->connect.remote_bda, 6);
+            // esp_log_buffer_hex(TAG, param->connect.remote_bda, 6);
             esp_ble_conn_update_params_t conn_params = {0};
             memcpy(conn_params.bda, param->connect.remote_bda, sizeof(esp_bd_addr_t));
             /* For the iOS system, please refer to Apple official documents about the BLE connection parameters restrictions. */
@@ -417,19 +442,23 @@ esp_err_t ble_cfg_net_init(void)
 }
 
 /**
- * 设置特征2的值
- * @param value 值
+ * 通过特征2发送数据
+ * @param data 数据指针
+ * @param len 数据长度（最大20字节）
  * @return 无
  */
-void ble_set_ch2_value(uint16_t value)
+void ble_send_ch2_data(const uint8_t *data, uint8_t len)
 {
-    sv1_char2_value[0] = value&0xff;
-    sv1_char2_value[1] = value>>8;
-    //判断连接是否有效，以及客户端特征配置是否不为0
-    if(gl_conn_id != 0xFFFF && (sv1_ch2_client_cfg[0] | sv1_ch2_client_cfg[1]))
+    if (len > 20) len = 20;
+    
+    // 更新特征值
+    memcpy(sv1_char2_value, data, len);
+    
+    // 判断连接是否有效，以及客户端特征配置是否不为0
+    if(gl_conn_id != 0xFFFF && (sv1_ch2_client_cfg[0] || sv1_ch2_client_cfg[1]))
     {
-        esp_ble_gatts_set_attr_value(sv1_handle_table[SV1_CH2_IDX_CHAR_VAL], 20, (const uint8_t*)&sv1_char2_value);
-        esp_ble_gatts_send_indicate(gl_gatts_if, gl_conn_id,sv1_handle_table[SV1_CH2_IDX_CHAR_VAL], 20, (uint8_t*)&sv1_char2_value, false);
+        esp_ble_gatts_set_attr_value(sv1_handle_table[SV1_CH2_IDX_CHAR_VAL], len, data);
+        esp_ble_gatts_send_indicate(gl_gatts_if, gl_conn_id, sv1_handle_table[SV1_CH2_IDX_CHAR_VAL], 
+                                    len, (uint8_t*)data, false);
     }
 }
-

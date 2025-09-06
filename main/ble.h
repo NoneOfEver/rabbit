@@ -10,11 +10,6 @@
 esp_err_t ble_cfg_net_init(void);
 
 
-/**
- * 设置特征2的值
- * @param value 值
- * @return 无
- */
-void ble_set_ch2_value(uint16_t value);
+void ble_send_ch2_data(const uint8_t *data, uint8_t len);
 
 #endif

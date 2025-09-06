@@ -1,20 +1,5 @@
 {
-  "C_Cpp.intelliSenseEngine": "default",
-  "idf.espIdfPath": "/home/noe/esp/esp-idf",
-  "idf.pythonInstallPath": "/usr/bin/python3",
-  "idf.openOcdConfigs": [
-    "board/esp32s3-builtin.cfg"
-  ],
-  "idf.port": "/dev/ttyUSB0",
-  "idf.toolsPath": "/home/noe/.espressif",
-  "idf.customExtraVars": {
-    "IDF_TARGET": "esp32s3"
-  },
-  "clangd.path": "/home/noe/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin/clangd",
-  "clangd.arguments": [
-    "--background-index",
-    "--query-driver=/home/noe/.espressif/tools/xtensa-esp-elf/esp-15.1.0_20250607/xtensa-esp-elf/bin/xtensa-esp32-elf-gcc",
-    "--compile-commands-dir=${workspaceFolder}/build"
-  ],
-  "idf.flashType": "UART"
+    "idf.port": "/dev/tty.usbserial-A5069RR4",
+    "git.ignoreLimitWarning": true,
+    "idf.flashType": "UART"
 }

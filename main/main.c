@@ -14,6 +14,12 @@
 #include "nvs_flash.h"
 #include "ble.h"
 
+#include "esp_vfs_fat.h"
+#include <string.h>
+#include <sys/unistd.h>
+#include <sys/stat.h>
+
+
 #define TAG "POS_CTRL"
 
 // ---------------- GPIO ----------------
@@ -49,7 +55,7 @@
 
 // ---------------- PID 参数 ----------------
 #define KP  2.72f // 2.6
-#define KI  3.0f // 0.3
+#define KI  3.0f  // 0.3
 #define KD  0.01f // 0.0
 
 // ---------------- RGB LED ----------------
@@ -72,6 +78,14 @@
 
 // 10MHz resolution, 1 tick = 0.1us (led strip needs a high resolution)
 #define LED_STRIP_RMT_RES_HZ  (10 * 1000 * 1000)
+
+// ---------------- SD Card ----------------
+#define PIN_CS 13
+#define PIN_MOSI 11
+#define PIN_MISO 12
+#define PIN_CLK 10
+ 
+#define MOUNT_POINT "/sdcard"
 
 // ---------------- BLE ----------------
 
@@ -290,18 +304,45 @@ void led_task(void *arg)
         vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
+// ---------------- SD Card ----------------
+void sdcard_init()
+{
+	sdmmc_host_t host=SDSPI_HOST_DEFAULT();
+	host.slot=SPI2_HOST;
+	spi_bus_config_t bus_cnf={
+		.mosi_io_num = PIN_MOSI,
+        .miso_io_num = PIN_MISO,
+        .sclk_io_num = PIN_CLK,
+		.quadhd_io_num=-1,  //这行不能省略
+		.quadwp_io_num=-1,  //这行不能省略
+		.max_transfer_sz=400000,
+	};
+	spi_bus_initialize(host.slot,&bus_cnf,SPI_DMA_CH_AUTO);
+	static sdspi_device_config_t slot_cnf={
+		.gpio_cs=PIN_CS,
+		.gpio_cd=SDSPI_SLOT_NO_CD, //这行不能省略
+		.gpio_int=GPIO_NUM_NC,//这行不能省略
+		.gpio_wp=GPIO_NUM_NC,//这行不能省略
+		.host_id=SPI2_HOST,
+    };
+	sdmmc_card_t *card;
+	esp_vfs_fat_sdmmc_mount_config_t mount_cnf={
+		.format_if_mount_failed=true,
+		.max_files=5,
+		.allocation_unit_size=16*1024,
+	};
+	esp_vfs_fat_sdspi_mount(MOUNT_POINT,&host,&slot_cnf,&mount_cnf,&card);
+}
 
 // ---------------- BLE ----------------
 void ble_task(void* param)
 {
     uint16_t count1 = 1;
-    uint16_t count2 = 100;
+    uint16_t count2 = 1;
     while(1)
     {
-        vTaskDelay(pdMS_TO_TICKS(3000));
-        // ble_set_ch1_value(count1++);
-        vTaskDelay(pdMS_TO_TICKS(700));
-        ble_set_ch2_value(count2++);
+        //ble_set_ch2_value(count2);
+        vTaskDelay(5000);
     }
 }
 
@@ -366,12 +407,34 @@ void app_main()
 
     ESP_ERROR_CHECK(i2cdev_init());
 
+    // BLE
     ble_cfg_net_init();
+
+    // SD Card
+    sdcard_init();
+    FILE* f = fopen(""MOUNT_POINT"/hello.txt", "w");
+    if (f == NULL) {
+        ESP_LOGE(TAG, "Failed to open file for writing");
+        return;
+    }
+    fprintf(f, "Hello %s!\n", MOUNT_POINT);
+    fclose(f);
+    ESP_LOGI(TAG, "File written");
+
+    FILE* f2 = fopen(""MOUNT_POINT"/hello.txt", "r");
+    if (f2 == NULL) {
+        ESP_LOGE(TAG, "Failed to open file for reading");
+        return;
+    }
+    char line[64];
+    fgets(line, sizeof(line), f2);
+    fclose(f2);
+    ESP_LOGI(TAG, "Read from file: '%s'", line);
 
     // 启动任务
     xTaskCreate(control_task, "control_task", 4096, NULL, 5, NULL);
     xTaskCreate(uart_cmd_task, "uart_cmd_task", 2048, NULL, 4, NULL);
-    xTaskCreate(ds3231_task, "ds3231_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-    xTaskCreate(led_task, "led_task", 2048, NULL, 3, NULL);
+    //xTaskCreate(ds3231_task, "ds3231_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+    xTaskCreate(led_task, "led_task", 6144, NULL, 3, NULL);
     xTaskCreatePinnedToCore(ble_task,"ble_task",6144,NULL,3,NULL,1);
 }
