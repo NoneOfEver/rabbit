@@ -15,6 +15,7 @@
 #include "esp_gatt_common_api.h"
 #include "nvs_flash.h"
 #include "ble.h"
+#include "rgb_led.h"
 
 #define TAG "BLE_CFG"
 
@@ -44,6 +45,7 @@ enum
 
     SV1_IDX_NB,
 };
+uint8_t g_ble_recive_flag = 0; // 标志位，表示是否收到数据
 
 static const uint16_t GATTS_SERVICE_UUID_TEST       = 0x18FF;   //自定义服务1
 static const uint16_t GATTS_CHAR_UUID_CH1           = 0x2AFE;   //特征1 UUID
@@ -84,7 +86,8 @@ static uint16_t gl_conn_id = 0xFFFF;
 
 //char1的值
 // static char sv1_char1_value[20] = {0};
-static uint8_t sv1_char1_value[20] = {0};
+uint8_t sv1_char1_value[20] = {0};
+uint8_t sv1_char1_value_len;
 //char2的值
 static char sv1_char2_value[20] = {0};
 
@@ -256,7 +259,7 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
 
         if (param->write.handle == sv1_handle_table[SV1_CH1_IDX_CHAR_VAL]) {   //特征1的值
             memcpy(sv1_char1_value, param->write.value, len);
-            
+            sv1_char1_value_len = len;
             // 正确打印接收到的数据
             ESP_LOGI(TAG, "Received message on CH1, length: %d", len);
             // 手动打印十六进制数据
@@ -265,9 +268,7 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
                 printf("%02x ", sv1_char1_value[i]);
             }
             printf("\n");
-            
-            // 通过特征2将接收到的数据发送回去
-            // ble_send_ch2_data(sv1_char1_value, len);
+            g_ble_recive_flag = 1;
             // 默认答复 1
             const uint8_t ack[1] = {1};
             ble_send_ch2_data(ack,1);
@@ -317,6 +318,7 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
             break;
         case ESP_GATTS_CONNECT_EVT:     //收到连接事件
             ESP_LOGI(TAG, "ESP_GATTS_CONNECT_EVT, conn_id = %d", param->connect.conn_id);
+            set_led_state(LED_BLUE_BLINK);
             // esp_log_buffer_hex(TAG, param->connect.remote_bda, 6);
             esp_ble_conn_update_params_t conn_params = {0};
             memcpy(conn_params.bda, param->connect.remote_bda, sizeof(esp_bd_addr_t));
@@ -331,6 +333,7 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
             break;
         case ESP_GATTS_DISCONNECT_EVT:  //收到断开连接事件
             ESP_LOGI(TAG, "ESP_GATTS_DISCONNECT_EVT, reason = 0x%x", param->disconnect.reason);
+            set_led_state(LED_GREEN);
             esp_ble_gap_start_advertising(&adv_params);
             gl_conn_id = 0xFFFF;
             break;
@@ -462,3 +465,6 @@ void ble_send_ch2_data(const uint8_t *data, uint8_t len)
                                     len, (uint8_t*)data, false);
     }
 }
+
+
+
