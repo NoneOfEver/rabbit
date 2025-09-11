@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/event_groups.h"
@@ -18,6 +19,12 @@
 #include "rgb_led.h"
 
 #define TAG "BLE_CFG"
+
+// 蓝牙超时相关变量
+bool g_ble_timeout_flag = false;
+bool g_ble_connected = false;
+bool g_ble_disconnected = false;
+TimerHandle_t ble_timeout_timer = NULL;
 
 //设备名称
 #define BLE_DEVICE_NAME     "RABBIT"
@@ -200,6 +207,15 @@ static esp_ble_adv_data_t scan_rsp_data = {
  * @param param 事件参数
  * @return 无
  */
+// 蓝牙超时回调函数
+static void ble_timeout_cb(void* arg) {
+    if (!g_ble_connected) {
+        g_ble_timeout_flag = true;
+        ESP_LOGI(TAG, "BLE timeout, no connection, stopping advertising");
+        esp_ble_gap_stop_advertising();
+    }
+}
+
 static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param)
 {
     switch (event) {
@@ -257,22 +273,22 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
                 // 限制写入长度，防止超出数组大小
                 uint8_t len = param->write.len > 20 ? 20 : param->write.len;
 
-        if (param->write.handle == sv1_handle_table[SV1_CH1_IDX_CHAR_VAL]) {   //特征1的值
-            memcpy(sv1_char1_value, param->write.value, len);
-            sv1_char1_value_len = len;
-            // 正确打印接收到的数据
-            ESP_LOGI(TAG, "Received message on CH1, length: %d", len);
-            // 手动打印十六进制数据
-            printf("CH1 Data: ");
-            for(int i = 0; i < len; i++) {
-                printf("%02x ", sv1_char1_value[i]);
-            }
-            printf("\n");
-            g_ble_recive_flag = 1;
-            // 默认答复 1
-            const uint8_t ack[1] = {1};
-            ble_send_ch2_data(ack,1);
-        }
+                if (param->write.handle == sv1_handle_table[SV1_CH1_IDX_CHAR_VAL]) {   //特征1的值
+                    memcpy(sv1_char1_value, param->write.value, len);
+                    sv1_char1_value_len = len;
+                    // 正确打印接收到的数据
+                    ESP_LOGI(TAG, "Received message on CH1, length: %d", len);
+                    // 手动打印十六进制数据
+                    printf("CH1 Data: ");
+                    for(int i = 0; i < len; i++) {
+                        printf("%02x ", sv1_char1_value[i]);
+                    }
+                    printf("\n");
+                    g_ble_recive_flag = 1;
+                    // 默认答复 1
+                    const uint8_t ack[1] = {1};
+                    ble_send_ch2_data(ack,1);
+                }
                 else if(param->write.handle == sv1_handle_table[SV1_CH1_IDX_CHAR_CFG])   //特征1客户端特征配置
                 {
                     sv1_ch1_client_cfg[0] = param->write.value[0];
@@ -318,8 +334,7 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
             break;
         case ESP_GATTS_CONNECT_EVT:     //收到连接事件
             ESP_LOGI(TAG, "ESP_GATTS_CONNECT_EVT, conn_id = %d", param->connect.conn_id);
-            set_led_state(LED_BLUE_BLINK);
-            // esp_log_buffer_hex(TAG, param->connect.remote_bda, 6);
+            g_ble_connected = true;  // 设置连接状态
             esp_ble_conn_update_params_t conn_params = {0};
             memcpy(conn_params.bda, param->connect.remote_bda, sizeof(esp_bd_addr_t));
             /* For the iOS system, please refer to Apple official documents about the BLE connection parameters restrictions. */
@@ -333,8 +348,7 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
             break;
         case ESP_GATTS_DISCONNECT_EVT:  //收到断开连接事件
             ESP_LOGI(TAG, "ESP_GATTS_DISCONNECT_EVT, reason = 0x%x", param->disconnect.reason);
-            set_led_state(LED_GREEN);
-            esp_ble_gap_start_advertising(&adv_params);
+            //esp_ble_gap_start_advertising(&adv_params);
             gl_conn_id = 0xFFFF;
             break;
         case ESP_GATTS_CREAT_ATTR_TAB_EVT: //注册ATTR表成功事件
@@ -441,6 +455,18 @@ esp_err_t ble_cfg_net_init(void)
     ESP_ERROR_CHECK(esp_ble_gap_register_callback(gap_event_handler));
     ESP_ERROR_CHECK(esp_ble_gatts_app_register(ESP_APP_ID));    //一个APP对应一份Profile
     ESP_ERROR_CHECK(esp_ble_gatt_set_local_mtu(500));
+
+
+    const esp_timer_create_args_t timer_args = {
+        .callback = &ble_timeout_cb,
+        .arg = NULL,
+        .dispatch_method = ESP_TIMER_TASK,
+        .name = "one_minute_timer"
+    };
+    esp_timer_handle_t timeout_timer;
+    esp_timer_create(&timer_args, &timeout_timer);
+    esp_timer_start_once(timeout_timer, 60000000); // 60秒后触发一次
+
     return ESP_OK;
 }
 
@@ -465,6 +491,4 @@ void ble_send_ch2_data(const uint8_t *data, uint8_t len)
                                     len, (uint8_t*)data, false);
     }
 }
-
-
 
