@@ -2,13 +2,7 @@
 #include "freertos/task.h"
 #include <stdio.h>
 
-#include "driver/ledc.h"
-#include "driver/gpio.h"
 #include "esp_log.h"
-#include <math.h>
-#include "encoder.h"
-#include "driver/uart.h"
-
 #include <led_strip.h>
 #include <led_strip_rmt.h>
 #include "nvs_flash.h"
@@ -21,8 +15,9 @@
 #include "rgb_led.h"
 #include "rtc.h"
 #include "sd_card.h"
-#include "esp_vfs_fat.h"
 #include "pulse_counter.h"
+#include "cmd_storage.h"
+
 
 #define TAG "MAIN"
 // 创建文件路径
@@ -36,38 +31,16 @@ void hex_dump(const uint8_t *data, size_t data_len) {
 }
 
 // 电机参数（使用一套定义）
-#define PPR         7
-#define GEAR_RATIO  298
-#define SCREW_PITCH_MM 0.7f
+#define PPR                 7
+#define GEAR_RATIO          298
+#define SCREW_PITCH_MM      0.7f
 
 // 计算每毫米脉冲数（宏观定义）
 #define PULSES_PER_MM ((PPR * GEAR_RATIO) / SCREW_PITCH_MM)
 
 // 编码器引脚定义
-#define ENCODER_A_GPIO 16
-#define ENCODER_B_GPIO 17
-
-// ---------------- UART ----------------
-#define UART_PORT   UART_NUM_0
-#define BUF_SIZE    128
-
-// ---------------- UART 命令 ----------------
-void uart_cmd_task(void *arg)
-{
-    uint8_t data[BUF_SIZE];
-    while (1)
-    {
-        int len = uart_read_bytes(UART_PORT, data, BUF_SIZE - 1, pdMS_TO_TICKS(10));
-        if (len > 0)
-        {
-            data[len] = '\0';
-            float new_target = atof((char*)data);
-            // target_pos_mm = new_target;
-            // ESP_LOGW(TAG, "New Target Position: %.2f mm", target_pos_mm);
-        }
-        vTaskDelay(pdMS_TO_TICKS(5));
-    }
-}
+#define ENCODER_A_GPIO      16
+#define ENCODER_B_GPIO      17
 
 // ---------------- BLE ----------------
 // ------------------ 命令结构定义 ------------------
@@ -94,13 +67,15 @@ static SemaphoreHandle_t command_list_mutex = NULL;
 // ------------------ 链表操作函数 ------------------
 
 // 初始化命令链表
-void init_command_list() {
+void init_command_list() 
+{
     command_list_mutex = xSemaphoreCreateMutex();
     command_list_head = NULL;
 }
 
 // 添加命令到链表尾部
-void add_command_to_list(BleCommand new_command) {
+void add_command_to_list(BleCommand new_command) 
+{
     CommandNode* new_node = malloc(sizeof(CommandNode));
     if (!new_node) {
         ESP_LOGE(TAG, "内存分配失败");
@@ -129,7 +104,8 @@ void add_command_to_list(BleCommand new_command) {
 }
 
 // 从链表头部取出命令节点
-CommandNode* get_next_command_node() {
+CommandNode* get_next_command_node() 
+{
     CommandNode* node = NULL;
     
     if (xSemaphoreTake(command_list_mutex, pdMS_TO_TICKS(1000)) == pdTRUE) {
@@ -145,7 +121,8 @@ CommandNode* get_next_command_node() {
 }
 
 // 清空命令链表
-void clear_command_list() {
+void clear_command_list() 
+{
     if (xSemaphoreTake(command_list_mutex, pdMS_TO_TICKS(1000)) == pdTRUE) {
         CommandNode* current = command_list_head;
         while (current != NULL) {
@@ -160,7 +137,8 @@ void clear_command_list() {
 }
 
 // 检查链表是否为空
-bool is_command_list_empty() {
+bool is_command_list_empty() 
+{
     bool empty = true;
     if (xSemaphoreTake(command_list_mutex, pdMS_TO_TICKS(1000)) == pdTRUE) {
         empty = (command_list_head == NULL);
@@ -170,7 +148,8 @@ bool is_command_list_empty() {
 }
 
 // 将分钟数转换为"小时:分钟"格式的字符串
-static void minutes_to_time_str(uint16_t minutes, char* buf, size_t buf_size) {
+static void minutes_to_time_str(uint16_t minutes, char* buf, size_t buf_size) 
+{
     uint16_t hours = minutes / 60;
     uint16_t mins = minutes % 60;
     snprintf(buf, buf_size, "%02d:%02d", hours, mins);
@@ -181,7 +160,8 @@ void command_execution_task(void *param);
 
 // 解析BLE命令
 // 解析时间更新命令 (5字节: YY MM DD HH MM)
-static void parse_time_command(uint8_t* data) {
+static void parse_time_command(uint8_t* data) 
+{
     uint8_t year = data[0];
     uint8_t month = data[1];
     uint8_t day = data[2];
@@ -193,7 +173,8 @@ static void parse_time_command(uint8_t* data) {
              year, month, day, hour, minute);
 }
 
-void parse_ble_command(uint8_t* data, size_t data_len) {
+void parse_ble_command(uint8_t* data, size_t data_len) 
+{
     const size_t COMMAND_SIZE = 10;
     const size_t TIME_COMMAND_SIZE = 5;
     
@@ -210,11 +191,6 @@ void parse_ble_command(uint8_t* data, size_t data_len) {
     size_t index = 0;
     
     while (index < data_len) {
-        // 跳过组结束标记0x01
-        // if (data[index] == 0x01) {
-        //     index++;
-        //     continue;
-        // }
         
         // 检查剩余数据是否足够一个命令
         if (index + COMMAND_SIZE > data_len) {
@@ -240,7 +216,9 @@ void parse_ble_command(uint8_t* data, size_t data_len) {
                     new_cmd.frame_header, new_cmd.frame_footer);
             continue;
         }
-        
+        // 添加任务数据到nvs
+        cmd_storage_add(data,data_len);
+        // 添加任务到链表
         add_command_to_list(new_cmd);
         float actual_length_mm = (float)new_cmd.movement_length * 0.01f;
         char time_str[16];
@@ -253,9 +231,7 @@ void parse_ble_command(uint8_t* data, size_t data_len) {
     }
 }
 
-// 命令执行任务函数声明
-void command_execution_task(void *param);
-
+// ble接收处理任务
 void ble_task(void* param)
 {
     init_command_list(); // 初始化链表
@@ -266,8 +242,8 @@ void ble_task(void* param)
         if(g_ble_recive_flag == 1)
         {
             g_ble_recive_flag = 0;
-            // 清空现有命令列表（接收新组时删除旧命令）
-            //clear_command_list();
+            // 清空nvs中之前的任务组
+            cmd_storage_clear();
             // 获取BLE数据长度（在ble.h中定义了sv1_char1_value_len）
             parse_ble_command(sv1_char1_value, sv1_char1_value_len);
         }
@@ -386,17 +362,51 @@ void command_execution_task(void *param) {
     vTaskDelete(NULL);
 }
 
-
-
 // ---------------- app_main ----------------
 void app_main()
 {
+    // nvs
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
         ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
+    cmd_storage_init();
+    // 上电读取nvs中的命令组
+    cmd_t cmds[MAX_CMDS];
+    size_t command_nums_in_nvs = cmd_storage_get(cmds,MAX_CMDS);
+    if(command_nums_in_nvs != 0){
+        // 初始化链表
+        init_command_list(); 
+        // 接收任务
+        for(int i = 0; i<command_nums_in_nvs; i++){
+            parse_ble_command(cmds[i].command, CMD_SIZE);
+        }
+        // 处理命令
+        while(1)
+        {
+            if (!is_command_list_empty()) {
+                CommandNode *node = get_next_command_node();
+                if (node == NULL) {
+                    continue;
+                }
+                float actual_length_mm = (float)node->command.movement_length * 0.01f;
+                char time_str[16];
+                minutes_to_time_str(node->command.time_minutes, time_str, sizeof(time_str));
+                ESP_LOGI(TAG, "调度命令: 时间=%s(%u分钟), 运动长度=%.2fmm, 天数=%u", 
+                        time_str, node->command.time_minutes, actual_length_mm, node->command.movement_days);
+                
+                // 创建任务执行命令，传递节点（节点将在任务中释放）
+                if (xTaskCreate(command_execution_task, "cmd_exec", 3072, node, 5, NULL) != pdPASS) {
+                    ESP_LOGE(TAG, "创建任务失败");
+                    free(node);
+                }
+            }else{
+                break;
+            }
+        }
+    }
 
     // rtc
     my_rtc_init();
@@ -414,19 +424,9 @@ void app_main()
         .pulses_per_mm = PULSES_PER_MM
     };
     pulse_counter_set_config(config);
+
     // motor
     motor_init();
-
-    // UART
-    const uart_config_t uart_config = {
-        .baud_rate = 115200,
-        .data_bits = UART_DATA_8_BITS,
-        .parity    = UART_PARITY_DISABLE,
-        .stop_bits = UART_STOP_BITS_1,
-        .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
-    };
-    uart_driver_install(UART_PORT, BUF_SIZE * 2, 0, 0, NULL, 0);
-    uart_param_config(UART_PORT, &uart_config);
 
     // BLE
     ble_cfg_net_init();
@@ -434,16 +434,8 @@ void app_main()
     // SD Card
     sdcard_init();
 
-    // // 打开文件进行写入
-    // FILE *file = fopen(file_path, "w");
-    // if (file == NULL) {
-    //     ESP_LOGE(TAG, "无法创建文件: %s", file_path);
-    // }
-
     // 启动任务
-    //xTaskCreate(ds3231_task, "ds3231_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
     xTaskCreate(control_task, "control_task", 4096, NULL, 5, NULL);
-    //xTaskCreate(uart_cmd_task, "uart_cmd_task", 2048, NULL, 4, NULL);
     xTaskCreate(led_task, "led_task", 5219, NULL, 3, NULL);
     xTaskCreatePinnedToCore(ble_task,"ble_task",6144,NULL,3,NULL,1);
 }

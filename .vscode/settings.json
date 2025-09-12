@@ -1,5 +1,7 @@
 {
-    "idf.port": "/dev/tty.usbserial-A5069RR4",
+    "idf.port": "/dev/ttyUSB0",
     "git.ignoreLimitWarning": true,
-    "idf.flashType": "UART"
+    "idf.flashType": "UART",
+    "idf.pythonInstallPath": "/home/noe/.espressif/python_env/idf6.0_py3.10_env/bin/python",
+    "editor.fontSize": 18
 }
