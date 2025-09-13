@@ -25,6 +25,8 @@ bool g_ble_timeout_flag = false;
 bool g_ble_connected = false;
 bool g_ble_disconnected = false;
 TimerHandle_t ble_timeout_timer = NULL;
+QueueHandle_t ble_event_queue;
+
 
 //设备名称
 #define BLE_DEVICE_NAME     "RABBIT"
@@ -200,6 +202,15 @@ static esp_ble_adv_data_t scan_rsp_data = {
     .flag = (ESP_BLE_ADV_FLAG_GEN_DISC | ESP_BLE_ADV_FLAG_BREDR_NOT_SPT),
 };
 
+esp_err_t ble_manager_disable(void) {
+    ble_event_t evt = BLE_EVENT_SHUTDOWN;
+    if (xQueueSend(ble_event_queue, &evt, 0) == pdTRUE) {
+        ESP_LOGI(TAG, "Shutdown event queued");
+        return ESP_OK;
+    }
+    return ESP_FAIL;
+}
+
 /**
  * gatt事件回调函数
  * @param event 事件ID
@@ -211,8 +222,7 @@ static esp_ble_adv_data_t scan_rsp_data = {
 static void ble_timeout_cb(void* arg) {
     if (!g_ble_connected) {
         g_ble_timeout_flag = true;
-        ESP_LOGI(TAG, "BLE timeout, no connection, stopping advertising");
-        esp_ble_gap_stop_advertising();
+        ble_manager_disable();
     }
 }
 
@@ -346,9 +356,13 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
             esp_ble_gap_update_conn_params(&conn_params);
             gl_conn_id = param->connect.conn_id;
             break;
+
         case ESP_GATTS_DISCONNECT_EVT:  //收到断开连接事件
             ESP_LOGI(TAG, "ESP_GATTS_DISCONNECT_EVT, reason = 0x%x", param->disconnect.reason);
             //esp_ble_gap_start_advertising(&adv_params);
+            //关闭蓝牙
+            ble_manager_disable();
+
             gl_conn_id = 0xFFFF;
             break;
         case ESP_GATTS_CREAT_ATTR_TAB_EVT: //注册ATTR表成功事件
@@ -456,6 +470,7 @@ esp_err_t ble_cfg_net_init(void)
     ESP_ERROR_CHECK(esp_ble_gatts_app_register(ESP_APP_ID));    //一个APP对应一份Profile
     ESP_ERROR_CHECK(esp_ble_gatt_set_local_mtu(500));
 
+    ble_event_queue = xQueueCreate(4, sizeof(ble_event_t));
 
     const esp_timer_create_args_t timer_args = {
         .callback = &ble_timeout_cb,

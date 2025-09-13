@@ -234,9 +234,10 @@ void parse_ble_command(uint8_t* data, size_t data_len)
 // ble接收处理任务
 void ble_task(void* param)
 {
-    static uint8_t nvs_has_ben_cleard = 0; // 加一个 清除过 标志位，防止反复清除】nvs
+    static uint8_t nvs_has_ben_cleard = 0; // 加一个 清除过 标志位，防止反复清除nvs
     init_command_list(); // 初始化链表
     
+
     while(1)
     {
         // 接收任务
@@ -278,6 +279,33 @@ void ble_task(void* param)
         }
 
         vTaskDelay(1000 / portTICK_PERIOD_MS); // 1秒延迟
+    }
+}
+
+static void ble_shutdown_task(void *pvParameters) {
+    ble_event_t evt;
+    for (;;) {
+        if (xQueueReceive(ble_event_queue, &evt, portMAX_DELAY)) {
+            if (evt == BLE_EVENT_SHUTDOWN) {
+                ESP_LOGI(TAG, "Shutting down BLE safely...");
+
+                esp_ble_gap_stop_advertising();
+
+                if (esp_bluedroid_get_status() == ESP_BLUEDROID_STATUS_ENABLED) {
+                    esp_bluedroid_disable();
+                    esp_bluedroid_deinit();
+                }
+
+                if (esp_bt_controller_get_status() == ESP_BT_CONTROLLER_STATUS_ENABLED) {
+                    esp_bt_controller_disable();
+                    esp_bt_controller_deinit();
+                }
+
+                esp_bt_controller_mem_release(ESP_BT_MODE_BLE);
+
+                ESP_LOGI(TAG, "BLE has been completely shut down");
+            }
+        }
     }
 }
 
@@ -448,5 +476,6 @@ void app_main()
     // 启动任务
     xTaskCreate(control_task, "control_task", 4096, NULL, 5, NULL);
     xTaskCreate(led_task, "led_task", 5219, NULL, 3, NULL);
+    xTaskCreate(ble_shutdown_task, "ble_shutdown_task", 4096, NULL, 5, NULL);
     xTaskCreatePinnedToCore(ble_task,"ble_task",6144,NULL,3,NULL,1);
 }

@@ -26,6 +26,10 @@
 
 #define SVC_IND_ID1      0
 
+typedef enum {
+    BLE_EVENT_SHUTDOWN = 1,
+} ble_event_t;
+
 // 全局变量 (在 ble.c 中定义)
 extern uint8_t g_ble_recive_flag;  // 注意：保持为 uint8_t 类型
 extern uint8_t sv1_char1_value[20];
@@ -38,7 +42,7 @@ extern uint8_t sv1_char1_value_len;
 extern bool g_ble_timeout_flag;       // 超时标志
 extern bool g_ble_connected;          // 连接状态
 extern TimerHandle_t ble_timeout_timer; // 超时计时器
-
+extern QueueHandle_t ble_event_queue;
 // 函数声明
 esp_err_t ble_cfg_net_init(void);
 void ble_send_ch2_data(const uint8_t *data, uint8_t len);
