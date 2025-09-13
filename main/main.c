@@ -1,5 +1,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include <stdint.h>
 #include <stdio.h>
 
 #include "esp_log.h"
@@ -216,8 +217,7 @@ void parse_ble_command(uint8_t* data, size_t data_len)
                     new_cmd.frame_header, new_cmd.frame_footer);
             continue;
         }
-        // 添加任务数据到nvs
-        cmd_storage_add(data,data_len);
+        
         // 添加任务到链表
         add_command_to_list(new_cmd);
         float actual_length_mm = (float)new_cmd.movement_length * 0.01f;
@@ -234,6 +234,7 @@ void parse_ble_command(uint8_t* data, size_t data_len)
 // ble接收处理任务
 void ble_task(void* param)
 {
+    static uint8_t nvs_has_ben_cleard = 0; // 加一个 清除过 标志位，防止反复清除】nvs
     init_command_list(); // 初始化链表
     
     while(1)
@@ -242,8 +243,17 @@ void ble_task(void* param)
         if(g_ble_recive_flag == 1)
         {
             g_ble_recive_flag = 0;
-            // 清空nvs中之前的任务组
-            cmd_storage_clear();
+
+            if(nvs_has_ben_cleard != 1){ // 只在第一次接收时清除nvs
+                // 清空nvs中之前的任务组
+                cmd_storage_clear();
+                nvs_has_ben_cleard = 1; // 表示已经清除过
+            }
+            if(sv1_char1_value_len == CMD_SIZE){
+                // 添加任务数据到nvs
+                cmd_storage_add(sv1_char1_value,sv1_char1_value_len);
+            }
+            
             // 获取BLE数据长度（在ble.h中定义了sv1_char1_value_len）
             parse_ble_command(sv1_char1_value, sv1_char1_value_len);
         }
@@ -376,6 +386,7 @@ void app_main()
     // 上电读取nvs中的命令组
     cmd_t cmds[MAX_CMDS];
     size_t command_nums_in_nvs = cmd_storage_get(cmds,MAX_CMDS);
+    ESP_LOGI(TAG,"%d",command_nums_in_nvs);
     if(command_nums_in_nvs != 0){
         // 初始化链表
         init_command_list(); 
