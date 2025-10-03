@@ -138,12 +138,12 @@ void set_motor_target(float delta)
     // 计算新目标位置
     float new_target = target_pos_mm + delta;
     
-    // 限制目标位置在-1.0mm到1.0mm之间
-    if (new_target > 1.0f) {
-        new_target = 1.0f;
-    } else if (new_target < -1.0f) {
-        new_target = -1.0f;
-    }
+    // // 限制目标位置在-1.0mm到1.0mm之间
+    // if (new_target > 1.0f) {
+    //     new_target = 1.0f;
+    // } else if (new_target < -1.0f) {
+    //     new_target = -1.0f;
+    // }
     
     target_pos_mm = new_target;
     
@@ -161,7 +161,6 @@ void set_motor_target(float delta)
 // ---------------- 电机输出 ----------------
 void motor_set_output(float val)
 {
-    
     int pwm_val = (int)(fabs(val) * PWM_MAX);
     if (pwm_val > PWM_MAX) pwm_val = PWM_MAX;
 
@@ -181,12 +180,14 @@ void motor_set_output(float val)
     }
 }
 
-// ---------------- 控制任务 ----------------
+
+#define MAX_STEP_MM 0.7f   // 单次最大移动距离
+
 static float step_mm = 0.0f;   // 每次步进量
 static SemaphoreHandle_t step_mutex;
+
 void control_task(void *arg)
 {
-    // 移除rotary_encoder_event_t e声明
     TickType_t last_tick = xTaskGetTickCount();
 
     while (1)
@@ -198,27 +199,36 @@ void control_task(void *arg)
         if (dt < 0.001f) dt = 0.001f;
         last_tick = now;
 
-        float u = pid_update(target_pos_mm, pos_mm, dt);
-        
+        // 限制单次目标不超过 MAX_STEP_MM
+        float segment_target = target_pos_mm;
+        if (target_pos_mm >  MAX_STEP_MM) segment_target =  MAX_STEP_MM;
+        if (target_pos_mm < -MAX_STEP_MM) segment_target = -MAX_STEP_MM;
+
+        float u = pid_update(segment_target, pos_mm, dt);
+
         // 检查是否到达目标位置并触发刹车
         if (u == 0.0f && !brake_requested) {
             motor_brake();
             // 重置编码器计数和位置
             pulse_counter_reset();
-            // 重置目标位置
-            target_pos_mm = 0.0f;
+            // 从总目标里减去已完成的段
+            target_pos_mm -= segment_target;
+            // 如果还有剩余距离，就准备下一段
+            if (target_pos_mm != 0.0f) {
+                brake_requested = false;   // <-- 关键：解除刹车，允许继续运动
+            }
         }
-        
+
         // 仅在未刹车时更新电机输出
         if (!brake_requested) {
             motor_set_output(u);
         }
 
-        // 在调整过程中显示当前信息（每100ms打印一次）
+        // 每100ms打印一次信息
         static TickType_t last_log_time = 0;
         if (now - last_log_time >= pdMS_TO_TICKS(100)) {
-            // ESP_LOGI(TAG, "目标: %.2f mm | 当前位置: %.4f mm | PWM输出: %.2f | 刹车: %s",
-            //          target_pos_mm, pos_mm, u, brake_requested ? "是" : "否");
+            ESP_LOGI(TAG, "剩余目标: %.2f mm | 当前: %.4f mm | PWM: %.2f | 刹车: %s",
+                     target_pos_mm, pos_mm, u, brake_requested ? "是" : "否");
             last_log_time = now;
         }
 

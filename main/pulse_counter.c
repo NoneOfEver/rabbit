@@ -68,7 +68,6 @@ void pulse_counter_set_config(encoder_config_t config)
 double pulse_counter_get_distance_mm(void)
 {
     int64_t pulses = pulse_counter_get_count();
-    // 脉冲数已包含4倍频计数，转换为物理周期数
     double cycles = (double)pulses / 4.0;
     double distance = cycles / s_encoder_config.pulses_per_mm;
     return distance;

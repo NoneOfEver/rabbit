@@ -18,11 +18,11 @@
 #include "sd_card.h"
 #include "pulse_counter.h"
 #include "cmd_storage.h"
-
+#include <math.h>
 
 #define TAG "MAIN"
 // 创建文件路径
-char file_path[] = MOUNT_POINT "/log.txt";
+char file_path[] = MOUNT_POINT "/LOG.txt";
 // 十六进制打印函数
 void hex_dump(const uint8_t *data, size_t data_len) {
     for (int i = 0; i < data_len; i++) {
@@ -237,7 +237,6 @@ void ble_task(void* param)
     static uint8_t nvs_has_ben_cleard = 0; // 加一个 清除过 标志位，防止反复清除nvs
     init_command_list(); // 初始化链表
     
-
     while(1)
     {
         // 接收任务
@@ -269,7 +268,7 @@ void ble_task(void* param)
             char time_str[16];
             minutes_to_time_str(node->command.time_minutes, time_str, sizeof(time_str));
             ESP_LOGI(TAG, "调度命令: 时间=%s(%u分钟), 运动长度=%.2fmm, 天数=%u", 
-                     time_str, node->command.time_minutes, actual_length_mm, node->command.movement_days);
+                     time_str, node->command.time_minutes, fabs(actual_length_mm), node->command.movement_days);
             
             // 创建任务执行命令，传递节点（节点将在任务中释放）
             if (xTaskCreate(command_execution_task, "cmd_exec", 3072, node, 5, NULL) != pdPASS) {
@@ -282,7 +281,8 @@ void ble_task(void* param)
     }
 }
 
-static void ble_shutdown_task(void *pvParameters) {
+static void ble_shutdown_task(void *pvParameters) 
+{
     ble_event_t evt;
     for (;;) {
         if (xQueueReceive(ble_event_queue, &evt, portMAX_DELAY)) {
@@ -310,7 +310,8 @@ static void ble_shutdown_task(void *pvParameters) {
 }
 
 // 命令执行任务
-void command_execution_task(void *param) {
+void command_execution_task(void *param) 
+{
     CommandNode *node = (CommandNode *)param;
     if (node == NULL) {
         vTaskDelete(NULL);
@@ -381,8 +382,8 @@ void command_execution_task(void *param) {
                 fprintf(f, "[%04d-%02d-%02d %02d:%02d:%02d] 执行命令: 时间=%s, 长度=%.2fmm, 方向=%s\n",
                         exec_time.tm_year + 1900, exec_time.tm_mon + 1, exec_time.tm_mday,
                         exec_time.tm_hour, exec_time.tm_min, exec_time.tm_sec,
-                        time_str, actual_length_mm,
-                        cmd->movement_direction ? "收缩" : "拉伸");
+                        time_str, fabs(actual_length_mm),
+                        cmd->movement_direction ? "拉伸" : "收缩");
                 fclose(f);
                 ESP_LOGI(TAG, "命令日志已写入SD卡");
             }
