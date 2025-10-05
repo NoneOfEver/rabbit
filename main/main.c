@@ -247,6 +247,8 @@ void ble_task(void* param)
             if(nvs_has_ben_cleard != 1){ // 只在第一次接收时清除nvs
                 // 清空nvs中之前的任务组
                 cmd_storage_clear();
+                // 清空已有任务链表
+                clear_command_list();
                 nvs_has_ben_cleard = 1; // 表示已经清除过
             }
             if(sv1_char1_value_len == CMD_SIZE){
@@ -312,91 +314,104 @@ static void ble_shutdown_task(void *pvParameters)
 // 命令执行任务
 void command_execution_task(void *param) 
 {
+    // 保存上一次执行的年月日和分钟
+    static int last_exec_year = -1, last_exec_mon = -1, last_exec_day = -1, last_exec_minute = -1;
+
     CommandNode *node = (CommandNode *)param;
     if (node == NULL) {
         vTaskDelete(NULL);
         return;
     }
+
     BleCommand *cmd = &node->command;
-    
+
+    // 计算任务结束日期（movement_days 表示任务持续天数）
+    struct tm end_date = node->start_date;
+    end_date.tm_mday += cmd->movement_days - 1; // movement_days=2 表示共执行两天
+    mktime(&end_date);  // 规范化日期结构
+
+    // 打印任务初始化信息
     char time_str[16];
     minutes_to_time_str(cmd->time_minutes, time_str, sizeof(time_str));
-    ESP_LOGI(TAG, "等待执行命令: 时间=%s, 天数=%u", time_str, cmd->movement_days);
-    
-    // 计算结束日期
-    struct tm end_date = node->start_date;
-    end_date.tm_mday += cmd->movement_days;
-    mktime(&end_date);  // 规范化日期
-    
-    bool executed = false;
-    
-    while (!executed) {
-        // 获取当前时间（从RTC）
-        struct tm current_time;
-        rtc_get_time(&current_time);  // 调用RTC模块获取当前时间
+    ESP_LOGI(TAG, "开始命令任务: 每天执行时间=%s, 持续 %u 天", time_str, cmd->movement_days);
 
-        // 计算当前时间的总分钟数（从午夜开始）
-        uint32_t current_minutes = current_time.tm_hour * 60 + current_time.tm_min;
-        
-        // 检查当前日期是否在有效期内
+    while (1)
+    {
+        // 获取当前 RTC 时间
+        struct tm current_time;
+        rtc_get_time(&current_time);
+
+        // 转换为 time_t 比较日期是否超期
         time_t current_time_t = mktime(&current_time);
-        time_t start_time_t = mktime(&node->start_date);
         time_t end_time_t = mktime(&end_date);
-        
-        if (current_time_t < start_time_t) {
-            // 当前日期早于任务开始日期（不应该发生）
-            vTaskDelay(pdMS_TO_TICKS(60000)); // 每分钟检查一次
-        } else if (current_time_t > end_time_t) {
-            // 当前日期已超过任务结束日期
-            ESP_LOGW(TAG, "命令已过期: 当前日期 %04d-%02d-%02d 不在有效期内（有效期从 %04d-%02d-%02d 到 %04d-%02d-%02d）",
-                     current_time.tm_year + 1900, current_time.tm_mon + 1, current_time.tm_mday,
-                     node->start_date.tm_year + 1900, node->start_date.tm_mon + 1, node->start_date.tm_mday,
-                     end_date.tm_year + 1900, end_date.tm_mon + 1, end_date.tm_mday);
-            executed = true;
+
+        // --- 任务到期检测 ---
+        if (current_time_t > end_time_t)
+        {
+            ESP_LOGI(TAG, "命令已到期，任务结束");
+            break; // 跳出 while 循环，任务结束
         }
-        // 检查是否到达执行时间且在有效期内
-        else if (current_minutes == cmd->time_minutes) {
-            // 执行电机动作
-            float actual_length_mm = (float)cmd->movement_length * 0.01f;
-            if (cmd->movement_direction) {
-                actual_length_mm = -actual_length_mm;
-            }
-            set_motor_target(actual_length_mm);
-            ESP_LOGI(TAG, "在 %s 执行命令: 长度=%.2fmm, 有效期 %u 天", 
-                     time_str, actual_length_mm, cmd->movement_days);
-            
-            // 记录命令到SD卡
-            FILE* f = fopen(file_path, "a");
-            if (f == NULL) {
-                // 尝试创建文件（如果打开失败可能是文件不存在）
-                f = fopen(file_path, "w");
-                if (f != NULL) {
-                    fclose(f);
-                    ESP_LOGI(TAG, "已创建日志文件: /sdcard/command_log.txt");
-                } else {
-                    ESP_LOGE(TAG, "创建日志文件失败: /sdcard/command_log.txt");
-                }
-            } else {
-                struct tm exec_time;
-                rtc_get_time(&exec_time);
-                fprintf(f, "[%04d-%02d-%02d %02d:%02d:%02d] 执行命令: 时间=%s, 长度=%.2fmm, 方向=%s\n",
-                        exec_time.tm_year + 1900, exec_time.tm_mon + 1, exec_time.tm_mday,
-                        exec_time.tm_hour, exec_time.tm_min, exec_time.tm_sec,
-                        time_str, fabs(actual_length_mm),
+
+        // 计算当前时间的分钟数
+        uint32_t current_minutes = current_time.tm_hour * 60 + current_time.tm_min;
+
+        // --- 检查是否到达执行时间 ---
+        if (current_minutes == cmd->time_minutes)
+        {
+            // 检查当前分钟是否已经执行过
+            if (current_time.tm_year != last_exec_year ||
+                current_time.tm_mon  != last_exec_mon  ||
+                current_time.tm_mday != last_exec_day ||
+                current_minutes      != last_exec_minute){
+
+                // 计算运动距离（单位：mm）
+                float actual_length_mm = (float)cmd->movement_length * 0.01f;
+                if (cmd->movement_direction) // 若方向标志为1，表示反向运动
+                    actual_length_mm = -actual_length_mm;
+
+                // 执行电机动作
+                set_motor_target(actual_length_mm);
+
+                ESP_LOGI(TAG, "执行命令: 日期=%04d-%02d-%02d, 长度=%.2fmm, 方向=%s",
+                        current_time.tm_year + 1900,
+                        current_time.tm_mon + 1,
+                        current_time.tm_mday,
+                        actual_length_mm,
                         cmd->movement_direction ? "拉伸" : "收缩");
-                fclose(f);
-                ESP_LOGI(TAG, "命令日志已写入SD卡");
+
+                // --- 记录执行日志 ---
+                FILE *f = fopen(file_path, "a");
+                if (f)
+                {
+                    fprintf(f, "[%04d-%02d-%02d %02d:%02d:%02d] 执行命令: 时间=%s, 长度=%.2fmm, 方向=%s\n",
+                            current_time.tm_year + 1900, current_time.tm_mon + 1, current_time.tm_mday,
+                            current_time.tm_hour, current_time.tm_min, current_time.tm_sec,
+                            time_str, fabs(actual_length_mm),
+                            cmd->movement_direction ? "拉伸" : "收缩");
+                    fclose(f);
+                    ESP_LOGI(TAG, "命令日志已写入SD卡");
+                }
+                else
+                {
+                    ESP_LOGE(TAG, "无法打开日志文件: %s", file_path);
+                }
+                // === 更新执行标记 ===
+                last_exec_year   = current_time.tm_year;
+                last_exec_mon    = current_time.tm_mon;
+                last_exec_day    = current_time.tm_mday;
+                last_exec_minute = current_minutes;
+                // 减小判断频率
+                vTaskDelay(pdMS_TO_TICKS(50000));
             }
-            executed = true;
-        } else {
-            // 计算剩余等待时间（分钟）
-            uint32_t remaining_minutes = cmd->time_minutes - current_minutes;
-            // 每秒检查一次（减少频繁检查的功耗）
-            vTaskDelay(pdMS_TO_TICKS(1000)); 
+        }
+        else
+        {
+            // 每秒检查一次时间（可以根据功耗需求调整）
+            vTaskDelay(pdMS_TO_TICKS(1000));
         }
     }
-    
-    // 清理资源
+
+    // --- 清理资源并退出任务 ---
     free(node);
     vTaskDelete(NULL);
 }
