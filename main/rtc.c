@@ -6,8 +6,8 @@
 #include "i2cdev.h"
 #include "rtc.h"
 // ---------------- GPIO ----------------
-#define CONFIG_EXAMPLE_I2C_MASTER_SDA 15
-#define CONFIG_EXAMPLE_I2C_MASTER_SCL 14
+#define CONFIG_EXAMPLE_I2C_MASTER_SDA 2
+#define CONFIG_EXAMPLE_I2C_MASTER_SCL 42
 
 static i2c_dev_t dev;  // 静态全局变量，只初始化一次
 static bool rtc_initialized = false;

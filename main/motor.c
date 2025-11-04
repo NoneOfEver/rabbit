@@ -11,7 +11,7 @@
 
 #define TAG "POS_CTRL"
 
-#define PIN_PWM_A   9
+#define PIN_PWM_A   18
 #define PIN_PWM_B   8
 #define PIN_EN      7
 
