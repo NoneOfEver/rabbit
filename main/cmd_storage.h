@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 #define CMD_SIZE 10
-#define MAX_CMDS 50   // 可根据需要调整最大命令数
+#define MAX_CMDS 120   // 可根据需要调整最大命令数
 
 typedef struct {
     uint8_t command[CMD_SIZE];

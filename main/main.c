@@ -247,8 +247,7 @@ void ble_task(void* param)
             if(nvs_has_ben_cleard != 1){ // 只在第一次接收时清除nvs
                 // 清空nvs中之前的任务组
                 cmd_storage_clear();
-                // 清空已有任务链表
-                clear_command_list();
+
                 nvs_has_ben_cleard = 1; // 表示已经清除过
             }
             if(sv1_char1_value_len == CMD_SIZE){
@@ -259,27 +258,7 @@ void ble_task(void* param)
             // 获取BLE数据长度（在ble.h中定义了sv1_char1_value_len）
             parse_ble_command(sv1_char1_value, sv1_char1_value_len);
         }
-
-        // 处理命令
-        if (!is_command_list_empty()) {
-            CommandNode *node = get_next_command_node();
-            if (node == NULL) {
-                continue;
-            }
-            float actual_length_mm = (float)node->command.movement_length * 0.01f;
-            char time_str[16];
-            minutes_to_time_str(node->command.time_minutes, time_str, sizeof(time_str));
-            ESP_LOGI(TAG, "调度命令: 时间=%s(%u分钟), 运动长度=%.2fmm, 天数=%u", 
-                     time_str, node->command.time_minutes, fabs(actual_length_mm), node->command.movement_days);
-            
-            // 创建任务执行命令，传递节点（节点将在任务中释放）
-            if (xTaskCreate(command_execution_task, "cmd_exec", 3072, node, 5, NULL) != pdPASS) {
-                ESP_LOGE(TAG, "创建任务失败");
-                free(node);
-            }
-        }
-
-        vTaskDelay(1000 / portTICK_PERIOD_MS); // 1秒延迟
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
 
@@ -306,6 +285,42 @@ static void ble_shutdown_task(void *pvParameters)
                 esp_bt_controller_mem_release(ESP_BT_MODE_BLE);
 
                 ESP_LOGI(TAG, "BLE has been completely shut down");
+
+                // 上电或者设置完了就读取nvs中的命令组
+                cmd_t cmds[MAX_CMDS];
+                size_t command_nums_in_nvs = cmd_storage_get(cmds,MAX_CMDS);
+                ESP_LOGI(TAG,"%d",command_nums_in_nvs);
+                if(command_nums_in_nvs != 0){
+                    // 初始化链表
+                    init_command_list(); 
+                    // 接收任务
+                    for(int i = 0; i<command_nums_in_nvs; i++){
+                        parse_ble_command(cmds[i].command, CMD_SIZE);
+                    }
+                    // 处理命令
+                    while(1)
+                    {
+                        if (!is_command_list_empty()) {
+                            CommandNode *node = get_next_command_node();
+                            if (node == NULL) {
+                                continue;
+                            }
+                            float actual_length_mm = (float)node->command.movement_length * 0.01f;
+                            char time_str[16];
+                            minutes_to_time_str(node->command.time_minutes, time_str, sizeof(time_str));
+                            ESP_LOGI(TAG, "调度命令: 时间=%s(%u分钟), 运动长度=%.2fmm, 天数=%u", 
+                                    time_str, node->command.time_minutes, actual_length_mm, node->command.movement_days);
+                            
+                            // 创建任务执行命令，传递节点（节点将在任务中释放）
+                            if (xTaskCreate(command_execution_task, "cmd_exec", 3072, node, 5, NULL) != pdPASS) {
+                                ESP_LOGE(TAG, "创建任务失败");
+                                free(node);
+                            }
+                        }else{
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
@@ -327,7 +342,7 @@ void command_execution_task(void *param)
 
     // 计算任务结束日期（movement_days 表示任务持续天数）
     struct tm end_date = node->start_date;
-    end_date.tm_mday += cmd->movement_days - 1; // movement_days=2 表示共执行两天
+    end_date.tm_mday += cmd->movement_days; // movement_days=2 表示共执行两天
     mktime(&end_date);  // 规范化日期结构
 
     // 打印任务初始化信息
@@ -358,6 +373,7 @@ void command_execution_task(void *param)
         // --- 检查是否到达执行时间 ---
         if (current_minutes == cmd->time_minutes)
         {
+            // ESP_LOGI(TAG, "到达执行时间: %02d:%02d", current_time.tm_hour, current_time.tm_min);
             // 检查当前分钟是否已经执行过
             if (current_time.tm_year != last_exec_year ||
                 current_time.tm_mon  != last_exec_mon  ||
@@ -401,7 +417,7 @@ void command_execution_task(void *param)
                 last_exec_day    = current_time.tm_mday;
                 last_exec_minute = current_minutes;
                 // 减小判断频率
-                vTaskDelay(pdMS_TO_TICKS(50000));
+                //vTaskDelay(pdMS_TO_TICKS(50000));
             }
         }
         else
@@ -427,41 +443,7 @@ void app_main()
     }
     ESP_ERROR_CHECK(ret);
     cmd_storage_init();
-    // 上电读取nvs中的命令组
-    cmd_t cmds[MAX_CMDS];
-    size_t command_nums_in_nvs = cmd_storage_get(cmds,MAX_CMDS);
-    ESP_LOGI(TAG,"%d",command_nums_in_nvs);
-    if(command_nums_in_nvs != 0){
-        // 初始化链表
-        init_command_list(); 
-        // 接收任务
-        for(int i = 0; i<command_nums_in_nvs; i++){
-            parse_ble_command(cmds[i].command, CMD_SIZE);
-        }
-        // 处理命令
-        while(1)
-        {
-            if (!is_command_list_empty()) {
-                CommandNode *node = get_next_command_node();
-                if (node == NULL) {
-                    continue;
-                }
-                float actual_length_mm = (float)node->command.movement_length * 0.01f;
-                char time_str[16];
-                minutes_to_time_str(node->command.time_minutes, time_str, sizeof(time_str));
-                ESP_LOGI(TAG, "调度命令: 时间=%s(%u分钟), 运动长度=%.2fmm, 天数=%u", 
-                        time_str, node->command.time_minutes, actual_length_mm, node->command.movement_days);
-                
-                // 创建任务执行命令，传递节点（节点将在任务中释放）
-                if (xTaskCreate(command_execution_task, "cmd_exec", 3072, node, 5, NULL) != pdPASS) {
-                    ESP_LOGE(TAG, "创建任务失败");
-                    free(node);
-                }
-            }else{
-                break;
-            }
-        }
-    }
+
 
     // rtc
     my_rtc_init();
