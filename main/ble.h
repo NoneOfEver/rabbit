@@ -20,9 +20,9 @@
 #define TAG "BLE_CFG"
 
 //设备名称
-#define BLE_DEVICE_NAME     "RABBIT"
+#define BLE_DEVICE_NAME     "RABBIT2"
 
-#define ESP_APP_ID                  0x55
+#define ESP_APP_ID                  0x55//55
 
 #define SVC_IND_ID1      0
 

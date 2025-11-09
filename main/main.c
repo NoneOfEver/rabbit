@@ -444,7 +444,6 @@ void app_main()
     ESP_ERROR_CHECK(ret);
     cmd_storage_init();
 
-
     // rtc
     my_rtc_init();
 

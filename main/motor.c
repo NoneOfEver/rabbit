@@ -19,6 +19,8 @@
 #define RE_B_GPIO   17
 #define RE_BTN_GPIO 5  // 不使用按钮
 
+#define TEST_KEY_A  19
+#define TEST_KEY_B  20
 // ---------------- 电机 & 编码器参数 ----------------
 #define PPR         7
 #define GEAR_RATIO  298
@@ -94,6 +96,18 @@ void motor_init()
     };
     pulse_counter_set_config(config);
     
+    // 初始化两个测试按键
+    gpio_config_t io_conf = {
+        .pin_bit_mask = 1ULL << TEST_KEY_A,  // 按键引脚，比如 GPIO0
+        .mode = GPIO_MODE_INPUT,              // 输入模式
+        .pull_up_en = GPIO_PULLUP_ENABLE,     // 开启上拉电阻（常见按键接地）
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+        .intr_type = GPIO_INTR_DISABLE        // 暂不使用中断
+    };
+    gpio_config(&io_conf);
+    io_conf.pin_bit_mask = 1ULL << TEST_KEY_B;
+    gpio_config(&io_conf);
+
     // 初始化后立即刹车
     motor_brake();
 }
@@ -204,7 +218,23 @@ void control_task(void *arg)
         if (target_pos_mm >  MAX_STEP_MM) segment_target =  MAX_STEP_MM;
         if (target_pos_mm < -MAX_STEP_MM) segment_target = -MAX_STEP_MM;
 
-        float u = pid_update(segment_target, pos_mm, dt);
+        int level_key_A = gpio_get_level(TEST_KEY_A);
+        int level_key_B = gpio_get_level(TEST_KEY_B);
+        float u;
+        if((target_pos_mm == 0) && (level_key_A == 0)) { 
+            brake_requested = false; //解除刹车
+            u = 1.0; //速度1.0移动
+            // 重置编码器计数和位置
+            pulse_counter_reset();
+        }else if((target_pos_mm == 0) && (level_key_B == 0)) {
+            brake_requested = false; //解除刹车
+            u = -1.0; //速度-1.0移动
+            // 重置编码器计数和位置
+            pulse_counter_reset();
+        }else {
+            u = pid_update(segment_target, pos_mm, dt);
+
+        }
 
         // 检查是否到达目标位置并触发刹车
         if (u == 0.0f && !brake_requested) {
@@ -223,6 +253,7 @@ void control_task(void *arg)
         if (!brake_requested) {
             motor_set_output(u);
         }
+
 
         // 每100ms打印一次信息
         static TickType_t last_log_time = 0;

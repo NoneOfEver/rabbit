@@ -28,14 +28,6 @@ TimerHandle_t ble_timeout_timer = NULL;
 QueueHandle_t ble_event_queue;
 
 
-//设备名称
-#define BLE_DEVICE_NAME     "RABBIT"
-
-
-#define ESP_APP_ID                  0x55
-
-#define SVC_IND_ID1      0
-
 //蓝牙模块
 enum
 {
