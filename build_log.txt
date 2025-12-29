@@ -1,0 +1,408 @@
+Executing action: all (aliases: build)
+Running ninja in directory /Users/panpoming/Documents/rabbit/build
+Executing "ninja all"...
+[1/1351] Building C object esp-idf/esp_driver_twai/CMakeFiles/__idf_esp_driver_twai.dir/esp_twai.c.obj
+FAILED: [code=1] esp-idf/esp_driver_twai/CMakeFiles/__idf_esp_driver_twai.dir/esp_twai.c.obj 
+/Users/panpoming/esp/esp-idf/tools/tools/xtensa-esp-elf/esp-15.1.0_20250607/xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc -DESP_PLATFORM -DIDF_VER=\"v6.0-dev-2039-g2044fba6e7\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE -DSOC_XTAL_FREQ_MHZ=CONFIG_XTAL_FREQ -D_GLIBCXX_HAVE_POSIX_SEMAPHORE -D_GLIBCXX_USE_POSIX_SEMAPHORE -D_GNU_SOURCE -D_POSIX_READER_WRITER_LOCKS -I/Users/panpoming/Documents/rabbit/build/config -I/Users/panpoming/esp/esp-idf/components/esp_driver_twai/include -I/Users/panpoming/esp/esp-idf/components/newlib/platform_include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/config/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/esp_additions/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/dma/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/ldo/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/debug_probe/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/etm/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/tuning_scheme_impl/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/power_supply/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/heap/include -I/Users/panpoming/esp/esp-idf/components/heap/tlsf -I/Users/panpoming/esp/esp-idf/components/log/include -I/Users/panpoming/esp/esp-idf/components/soc/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/register -I/Users/panpoming/esp/esp-idf/components/hal/platform_port/include -I/Users/panpoming/esp/esp-idf/components/hal/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/hal/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_common/include -I/Users/panpoming/esp/esp-idf/components/esp_system/include -I/Users/panpoming/esp/esp-idf/components/esp_system/port/soc -I/Users/panpoming/esp/esp-idf/components/esp_system/port/include/private -I/Users/panpoming/esp/esp-idf/components/xtensa/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/xtensa/include -I/Users/panpoming/esp/esp-idf/components/xtensa/deprecated_include -I/Users/panpoming/esp/esp-idf/components/lwip/include -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps/sntp -I/Users/panpoming/esp/esp-idf/components/lwip/lwip/src/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/freertos/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/arch -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/sys -I/Users/panpoming/esp/esp-idf/components/esp_driver_gpio/include -I/Users/panpoming/esp/esp-idf/components/esp_pm/include -mlongcalls -fno-builtin-memcpy -fno-builtin-memset -fno-builtin-bzero  -fdiagnostics-color=always -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-error=extra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fno-shrink-wrap -fmacro-prefix-map=/Users/panpoming/Documents/rabbit=. -fmacro-prefix-map=/Users/panpoming/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -std=gnu23 -Wno-old-style-declaration -fzero-init-padding-bits=all -fno-malloc-dce -MD -MT esp-idf/esp_driver_twai/CMakeFiles/__idf_esp_driver_twai.dir/esp_twai.c.obj -MF esp-idf/esp_driver_twai/CMakeFiles/__idf_esp_driver_twai.dir/esp_twai.c.obj.d -o esp-idf/esp_driver_twai/CMakeFiles/__idf_esp_driver_twai.dir/esp_twai.c.obj -c /Users/panpoming/esp/esp-idf/components/esp_driver_twai/esp_twai.c
+In file included from /Users/panpoming/esp/esp-idf/components/newlib/platform_include/stdatomic.h:7,
+                 from /Users/panpoming/esp/esp-idf/components/esp_driver_twai/twai_private.h:13,
+                 from /Users/panpoming/esp/esp-idf/components/esp_driver_twai/esp_twai.c:11:
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_thread_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:143:9: error: implicit declaration of function '__c11_atomic_thread_fence'; did you mean '__atomic_thread_fence'? [-Wimplicit-function-declaration]
+  143 |         __c11_atomic_thread_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_thread_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_signal_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:156:9: error: implicit declaration of function '__c11_atomic_signal_fence'; did you mean '__atomic_signal_fence'? [-Wimplicit-function-declaration]
+  156 |         __c11_atomic_signal_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_signal_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_test_and_set_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:242:9: error: implicit declaration of function '__c11_atomic_exchange'; did you mean '__atomic_exchange'? [-Wimplicit-function-declaration]
+  242 |         __c11_atomic_exchange(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:382:17: note: in expansion of macro 'atomic_exchange_explicit'
+  382 |         return (atomic_exchange_explicit(&__object->__flag, 1, __order));
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_clear_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:256:9: error: implicit declaration of function '__c11_atomic_store'; did you mean '__atomic_store'? [-Wimplicit-function-declaration]
+  256 |         __c11_atomic_store(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:389:9: note: in expansion of macro 'atomic_store_explicit'
+  389 |         atomic_store_explicit(&__object->__flag, 0, __order);
+      |         ^~~~~~~~~~~~~~~~~~~~~
+[2/1351] Building C object esp-idf/esp_http_client/CMakeFiles/__idf_esp_http_client.dir/lib/http_utils.c.obj
+FAILED: [code=1] esp-idf/esp_http_client/CMakeFiles/__idf_esp_http_client.dir/lib/http_utils.c.obj 
+/Users/panpoming/esp/esp-idf/tools/tools/xtensa-esp-elf/esp-15.1.0_20250607/xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc -DESP_PLATFORM -DIDF_VER=\"v6.0-dev-2039-g2044fba6e7\" -DMBEDTLS_CONFIG_FILE=\"mbedtls/esp_config.h\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE -DSOC_XTAL_FREQ_MHZ=CONFIG_XTAL_FREQ -D_GLIBCXX_HAVE_POSIX_SEMAPHORE -D_GLIBCXX_USE_POSIX_SEMAPHORE -D_GNU_SOURCE -D_POSIX_READER_WRITER_LOCKS -I/Users/panpoming/Documents/rabbit/build/config -I/Users/panpoming/esp/esp-idf/components/esp_http_client/include -I/Users/panpoming/esp/esp-idf/components/esp_http_client/lib/include -I/Users/panpoming/esp/esp-idf/components/newlib/platform_include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/config/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/esp_additions/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/dma/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/ldo/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/debug_probe/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/etm/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/tuning_scheme_impl/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/power_supply/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/heap/include -I/Users/panpoming/esp/esp-idf/components/heap/tlsf -I/Users/panpoming/esp/esp-idf/components/log/include -I/Users/panpoming/esp/esp-idf/components/soc/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/register -I/Users/panpoming/esp/esp-idf/components/hal/platform_port/include -I/Users/panpoming/esp/esp-idf/components/hal/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/hal/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_common/include -I/Users/panpoming/esp/esp-idf/components/esp_system/include -I/Users/panpoming/esp/esp-idf/components/esp_system/port/soc -I/Users/panpoming/esp/esp-idf/components/esp_system/port/include/private -I/Users/panpoming/esp/esp-idf/components/xtensa/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/xtensa/include -I/Users/panpoming/esp/esp-idf/components/xtensa/deprecated_include -I/Users/panpoming/esp/esp-idf/components/lwip/include -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps/sntp -I/Users/panpoming/esp/esp-idf/components/lwip/lwip/src/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/freertos/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/arch -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/sys -I/Users/panpoming/esp/esp-idf/components/esp_event/include -I/Users/panpoming/esp/esp-idf/components/tcp_transport/include -I/Users/panpoming/esp/esp-idf/components/esp-tls -I/Users/panpoming/esp/esp-idf/components/esp-tls/esp-tls-crypto -I/Users/panpoming/esp/esp-idf/components/mbedtls/port/include -I/Users/panpoming/esp/esp-idf/components/mbedtls/mbedtls/include -I/Users/panpoming/esp/esp-idf/components/mbedtls/mbedtls/library -I/Users/panpoming/esp/esp-idf/components/mbedtls/esp_crt_bundle/include -I/Users/panpoming/esp/esp-idf/components/esp_security/include -I/Users/panpoming/esp/esp-idf/components/mbedtls/mbedtls/3rdparty/everest/include -I/Users/panpoming/esp/esp-idf/components/mbedtls/mbedtls/3rdparty/p256-m -I/Users/panpoming/esp/esp-idf/components/mbedtls/mbedtls/3rdparty/p256-m/p256-m -I/Users/panpoming/esp/esp-idf/components/esp_timer/include -I/Users/panpoming/esp/esp-idf/components/http_parser -mlongcalls -fno-builtin-memcpy -fno-builtin-memset -fno-builtin-bzero  -fdiagnostics-color=always -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-error=extra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fno-shrink-wrap -fmacro-prefix-map=/Users/panpoming/Documents/rabbit=. -fmacro-prefix-map=/Users/panpoming/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -std=gnu23 -Wno-old-style-declaration -fzero-init-padding-bits=all -fno-malloc-dce -MD -MT esp-idf/esp_http_client/CMakeFiles/__idf_esp_http_client.dir/lib/http_utils.c.obj -MF esp-idf/esp_http_client/CMakeFiles/__idf_esp_http_client.dir/lib/http_utils.c.obj.d -o esp-idf/esp_http_client/CMakeFiles/__idf_esp_http_client.dir/lib/http_utils.c.obj -c /Users/panpoming/esp/esp-idf/components/esp_http_client/lib/http_utils.c
+In file included from /Users/panpoming/esp/esp-idf/components/esp_http_client/lib/http_utils.c:8:
+/Users/panpoming/esp/esp-idf/components/esp_http_client/lib/http_utils.c: In function 'http_utils_str_starts_with':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/ctype.h:90:52: error: array subscript has type 'char' [-Werror=char-subscripts]
+   90 | #define __ctype_lookup(__c) ((__CTYPE_PTR+sizeof(""[__c]))[(int)(__c)])
+      |                                                    ^
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/ctype.h:93:27: note: in expansion of macro '__ctype_lookup'
+   93 | #define isupper(__c)    ((__ctype_lookup(__c)&(_U|_L))==_U)
+      |                           ^~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/ctype.h:163:7: note: in expansion of macro 'isupper'
+  163 |       isupper (__x) ? (int) __x - 'A' + 'a' : (int) __x;})
+      |       ^~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_http_client/lib/http_utils.c:156:13: note: in expansion of macro 'tolower'
+  156 |         if (tolower(str[i]) != tolower(start[i])) {
+      |             ^~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/ctype.h:90:52: error: array subscript has type 'char' [-Werror=char-subscripts]
+   90 | #define __ctype_lookup(__c) ((__CTYPE_PTR+sizeof(""[__c]))[(int)(__c)])
+      |                                                    ^
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/ctype.h:93:27: note: in expansion of macro '__ctype_lookup'
+   93 | #define isupper(__c)    ((__ctype_lookup(__c)&(_U|_L))==_U)
+      |                           ^~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/ctype.h:163:7: note: in expansion of macro 'isupper'
+  163 |       isupper (__x) ? (int) __x - 'A' + 'a' : (int) __x;})
+      |       ^~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_http_client/lib/http_utils.c:156:32: note: in expansion of macro 'tolower'
+  156 |         if (tolower(str[i]) != tolower(start[i])) {
+      |                                ^~~~~~~
+cc1: some warnings being treated as errors
+[3/1351] Building C object esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_filter.c.obj
+FAILED: [code=1] esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_filter.c.obj 
+/Users/panpoming/esp/esp-idf/tools/tools/xtensa-esp-elf/esp-15.1.0_20250607/xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc -DESP_PLATFORM -DIDF_VER=\"v6.0-dev-2039-g2044fba6e7\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE -DSOC_XTAL_FREQ_MHZ=CONFIG_XTAL_FREQ -D_GLIBCXX_HAVE_POSIX_SEMAPHORE -D_GLIBCXX_USE_POSIX_SEMAPHORE -D_GNU_SOURCE -D_POSIX_READER_WRITER_LOCKS -I/Users/panpoming/Documents/rabbit/build/config -I/Users/panpoming/esp/esp-idf/components/esp_adc/include -I/Users/panpoming/esp/esp-idf/components/esp_adc/interface -I/Users/panpoming/esp/esp-idf/components/esp_adc/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/newlib/platform_include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/config/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/esp_additions/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/dma/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/ldo/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/debug_probe/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/etm/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/tuning_scheme_impl/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/power_supply/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/heap/include -I/Users/panpoming/esp/esp-idf/components/heap/tlsf -I/Users/panpoming/esp/esp-idf/components/log/include -I/Users/panpoming/esp/esp-idf/components/soc/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/register -I/Users/panpoming/esp/esp-idf/components/hal/platform_port/include -I/Users/panpoming/esp/esp-idf/components/hal/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/hal/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_common/include -I/Users/panpoming/esp/esp-idf/components/esp_system/include -I/Users/panpoming/esp/esp-idf/components/esp_system/port/soc -I/Users/panpoming/esp/esp-idf/components/esp_system/port/include/private -I/Users/panpoming/esp/esp-idf/components/xtensa/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/xtensa/include -I/Users/panpoming/esp/esp-idf/components/xtensa/deprecated_include -I/Users/panpoming/esp/esp-idf/components/lwip/include -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps/sntp -I/Users/panpoming/esp/esp-idf/components/lwip/lwip/src/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/freertos/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/arch -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/sys -I/Users/panpoming/esp/esp-idf/components/esp_driver_gpio/include -I/Users/panpoming/esp/esp-idf/components/efuse/include -I/Users/panpoming/esp/esp-idf/components/efuse/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_pm/include -I/Users/panpoming/esp/esp-idf/components/esp_ringbuf/include -I/Users/panpoming/esp/esp-idf/components/esp_mm/include -mlongcalls -fno-builtin-memcpy -fno-builtin-memset -fno-builtin-bzero  -fdiagnostics-color=always -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-error=extra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fno-shrink-wrap -fmacro-prefix-map=/Users/panpoming/Documents/rabbit=. -fmacro-prefix-map=/Users/panpoming/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -std=gnu23 -Wno-old-style-declaration -fzero-init-padding-bits=all -fno-malloc-dce -MD -MT esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_filter.c.obj -MF esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_filter.c.obj.d -o esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_filter.c.obj -c /Users/panpoming/esp/esp-idf/components/esp_adc/adc_filter.c
+In file included from /Users/panpoming/esp/esp-idf/components/newlib/platform_include/stdatomic.h:7,
+                 from /Users/panpoming/esp/esp-idf/components/esp_adc/adc_filter.c:7:
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_thread_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:143:9: error: implicit declaration of function '__c11_atomic_thread_fence'; did you mean '__atomic_thread_fence'? [-Wimplicit-function-declaration]
+  143 |         __c11_atomic_thread_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_thread_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_signal_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:156:9: error: implicit declaration of function '__c11_atomic_signal_fence'; did you mean '__atomic_signal_fence'? [-Wimplicit-function-declaration]
+  156 |         __c11_atomic_signal_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_signal_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: At top level:
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:201:17: error: unknown type name 'int_least8_t'
+  201 | typedef _Atomic(int_least8_t)           atomic_int_least8_t;
+      |                 ^~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:202:17: error: unknown type name 'uint_least8_t'; did you mean 'atomic_int_least8_t'?
+  202 | typedef _Atomic(uint_least8_t)          atomic_uint_least8_t;
+      |                 ^~~~~~~~~~~~~
+      |                 atomic_int_least8_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:203:17: error: unknown type name 'int_least16_t'
+  203 | typedef _Atomic(int_least16_t)          atomic_int_least16_t;
+      |                 ^~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:204:17: error: unknown type name 'uint_least16_t'; did you mean 'atomic_int_least16_t'?
+  204 | typedef _Atomic(uint_least16_t)         atomic_uint_least16_t;
+      |                 ^~~~~~~~~~~~~~
+      |                 atomic_int_least16_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:205:17: error: unknown type name 'int_least32_t'
+  205 | typedef _Atomic(int_least32_t)          atomic_int_least32_t;
+      |                 ^~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:206:17: error: unknown type name 'uint_least32_t'; did you mean 'atomic_int_least32_t'?
+  206 | typedef _Atomic(uint_least32_t)         atomic_uint_least32_t;
+      |                 ^~~~~~~~~~~~~~
+      |                 atomic_int_least32_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:207:17: error: unknown type name 'int_least64_t'
+  207 | typedef _Atomic(int_least64_t)          atomic_int_least64_t;
+      |                 ^~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:208:17: error: unknown type name 'uint_least64_t'; did you mean 'atomic_int_least64_t'?
+  208 | typedef _Atomic(uint_least64_t)         atomic_uint_least64_t;
+      |                 ^~~~~~~~~~~~~~
+      |                 atomic_int_least64_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:209:17: error: unknown type name 'int_fast8_t'
+  209 | typedef _Atomic(int_fast8_t)            atomic_int_fast8_t;
+      |                 ^~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:210:17: error: unknown type name 'uint_fast8_t'
+  210 | typedef _Atomic(uint_fast8_t)           atomic_uint_fast8_t;
+      |                 ^~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:211:17: error: unknown type name 'int_fast16_t'
+  211 | typedef _Atomic(int_fast16_t)           atomic_int_fast16_t;
+      |                 ^~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:212:17: error: unknown type name 'uint_fast16_t'; did you mean 'atomic_int_fast16_t'?
+  212 | typedef _Atomic(uint_fast16_t)          atomic_uint_fast16_t;
+      |                 ^~~~~~~~~~~~~
+      |                 atomic_int_fast16_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:213:17: error: unknown type name 'int_fast32_t'
+  213 | typedef _Atomic(int_fast32_t)           atomic_int_fast32_t;
+      |                 ^~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:214:17: error: unknown type name 'uint_fast32_t'; did you mean 'atomic_int_fast32_t'?
+  214 | typedef _Atomic(uint_fast32_t)          atomic_uint_fast32_t;
+      |                 ^~~~~~~~~~~~~
+      |                 atomic_int_fast32_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:215:17: error: unknown type name 'int_fast64_t'
+  215 | typedef _Atomic(int_fast64_t)           atomic_int_fast64_t;
+      |                 ^~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:216:17: error: unknown type name 'uint_fast64_t'; did you mean 'atomic_int_fast64_t'?
+  216 | typedef _Atomic(uint_fast64_t)          atomic_uint_fast64_t;
+      |                 ^~~~~~~~~~~~~
+      |                 atomic_int_fast64_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:217:17: error: unknown type name 'intptr_t'
+  217 | typedef _Atomic(intptr_t)               atomic_intptr_t;
+      |                 ^~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:35:1: note: 'intptr_t' is defined in header '<stdint.h>'; this is probably fixable by adding '#include <stdint.h>'
+   34 | #include <sys/_types.h>
+  +++ |+#include <stdint.h>
+   35 | 
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:218:17: error: unknown type name 'uintptr_t'
+  218 | typedef _Atomic(uintptr_t)              atomic_uintptr_t;
+      |                 ^~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:218:17: note: 'uintptr_t' is defined in header '<stdint.h>'; this is probably fixable by adding '#include <stdint.h>'
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:221:17: error: unknown type name 'intmax_t'
+  221 | typedef _Atomic(intmax_t)               atomic_intmax_t;
+      |                 ^~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:222:17: error: unknown type name 'uintmax_t'
+  222 | typedef _Atomic(uintmax_t)              atomic_uintmax_t;
+      |                 ^~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_test_and_set_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:242:9: error: implicit declaration of function '__c11_atomic_exchange'; did you mean '__atomic_exchange'? [-Wimplicit-function-declaration]
+  242 |         __c11_atomic_exchange(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:382:17: note: in expansion of macro 'atomic_exchange_explicit'
+  382 |         return (atomic_exchange_explicit(&__object->__flag, 1, __order));
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_clear_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:256:9: error: implicit declaration of function '__c11_atomic_store'; did you mean '__atomic_store'? [-Wimplicit-function-declaration]
+  256 |         __c11_atomic_store(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:389:9: note: in expansion of macro 'atomic_store_explicit'
+  389 |         atomic_store_explicit(&__object->__flag, 0, __order);
+      |         ^~~~~~~~~~~~~~~~~~~~~
+[4/1351] Building C object esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_monitor.c.obj
+FAILED: [code=1] esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_monitor.c.obj 
+/Users/panpoming/esp/esp-idf/tools/tools/xtensa-esp-elf/esp-15.1.0_20250607/xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc -DESP_PLATFORM -DIDF_VER=\"v6.0-dev-2039-g2044fba6e7\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE -DSOC_XTAL_FREQ_MHZ=CONFIG_XTAL_FREQ -D_GLIBCXX_HAVE_POSIX_SEMAPHORE -D_GLIBCXX_USE_POSIX_SEMAPHORE -D_GNU_SOURCE -D_POSIX_READER_WRITER_LOCKS -I/Users/panpoming/Documents/rabbit/build/config -I/Users/panpoming/esp/esp-idf/components/esp_adc/include -I/Users/panpoming/esp/esp-idf/components/esp_adc/interface -I/Users/panpoming/esp/esp-idf/components/esp_adc/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/newlib/platform_include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/config/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/esp_additions/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/dma/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/ldo/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/debug_probe/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/etm/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/tuning_scheme_impl/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/power_supply/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/heap/include -I/Users/panpoming/esp/esp-idf/components/heap/tlsf -I/Users/panpoming/esp/esp-idf/components/log/include -I/Users/panpoming/esp/esp-idf/components/soc/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/register -I/Users/panpoming/esp/esp-idf/components/hal/platform_port/include -I/Users/panpoming/esp/esp-idf/components/hal/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/hal/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_common/include -I/Users/panpoming/esp/esp-idf/components/esp_system/include -I/Users/panpoming/esp/esp-idf/components/esp_system/port/soc -I/Users/panpoming/esp/esp-idf/components/esp_system/port/include/private -I/Users/panpoming/esp/esp-idf/components/xtensa/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/xtensa/include -I/Users/panpoming/esp/esp-idf/components/xtensa/deprecated_include -I/Users/panpoming/esp/esp-idf/components/lwip/include -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps/sntp -I/Users/panpoming/esp/esp-idf/components/lwip/lwip/src/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/freertos/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/arch -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/sys -I/Users/panpoming/esp/esp-idf/components/esp_driver_gpio/include -I/Users/panpoming/esp/esp-idf/components/efuse/include -I/Users/panpoming/esp/esp-idf/components/efuse/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_pm/include -I/Users/panpoming/esp/esp-idf/components/esp_ringbuf/include -I/Users/panpoming/esp/esp-idf/components/esp_mm/include -mlongcalls -fno-builtin-memcpy -fno-builtin-memset -fno-builtin-bzero  -fdiagnostics-color=always -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-error=extra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fno-shrink-wrap -fmacro-prefix-map=/Users/panpoming/Documents/rabbit=. -fmacro-prefix-map=/Users/panpoming/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -std=gnu23 -Wno-old-style-declaration -fzero-init-padding-bits=all -fno-malloc-dce -MD -MT esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_monitor.c.obj -MF esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_monitor.c.obj.d -o esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_monitor.c.obj -c /Users/panpoming/esp/esp-idf/components/esp_adc/adc_monitor.c
+In file included from /Users/panpoming/esp/esp-idf/components/newlib/platform_include/stdatomic.h:7,
+                 from /Users/panpoming/esp/esp-idf/components/esp_adc/adc_monitor.c:7:
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_thread_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:143:9: error: implicit declaration of function '__c11_atomic_thread_fence'; did you mean '__atomic_thread_fence'? [-Wimplicit-function-declaration]
+  143 |         __c11_atomic_thread_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_thread_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_signal_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:156:9: error: implicit declaration of function '__c11_atomic_signal_fence'; did you mean '__atomic_signal_fence'? [-Wimplicit-function-declaration]
+  156 |         __c11_atomic_signal_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_signal_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: At top level:
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:201:17: error: unknown type name 'int_least8_t'
+  201 | typedef _Atomic(int_least8_t)           atomic_int_least8_t;
+      |                 ^~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:202:17: error: unknown type name 'uint_least8_t'; did you mean 'atomic_int_least8_t'?
+  202 | typedef _Atomic(uint_least8_t)          atomic_uint_least8_t;
+      |                 ^~~~~~~~~~~~~
+      |                 atomic_int_least8_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:203:17: error: unknown type name 'int_least16_t'
+  203 | typedef _Atomic(int_least16_t)          atomic_int_least16_t;
+      |                 ^~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:204:17: error: unknown type name 'uint_least16_t'; did you mean 'atomic_int_least16_t'?
+  204 | typedef _Atomic(uint_least16_t)         atomic_uint_least16_t;
+      |                 ^~~~~~~~~~~~~~
+      |                 atomic_int_least16_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:205:17: error: unknown type name 'int_least32_t'
+  205 | typedef _Atomic(int_least32_t)          atomic_int_least32_t;
+      |                 ^~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:206:17: error: unknown type name 'uint_least32_t'; did you mean 'atomic_int_least32_t'?
+  206 | typedef _Atomic(uint_least32_t)         atomic_uint_least32_t;
+      |                 ^~~~~~~~~~~~~~
+      |                 atomic_int_least32_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:207:17: error: unknown type name 'int_least64_t'
+  207 | typedef _Atomic(int_least64_t)          atomic_int_least64_t;
+      |                 ^~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:208:17: error: unknown type name 'uint_least64_t'; did you mean 'atomic_int_least64_t'?
+  208 | typedef _Atomic(uint_least64_t)         atomic_uint_least64_t;
+      |                 ^~~~~~~~~~~~~~
+      |                 atomic_int_least64_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:209:17: error: unknown type name 'int_fast8_t'
+  209 | typedef _Atomic(int_fast8_t)            atomic_int_fast8_t;
+      |                 ^~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:210:17: error: unknown type name 'uint_fast8_t'
+  210 | typedef _Atomic(uint_fast8_t)           atomic_uint_fast8_t;
+      |                 ^~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:211:17: error: unknown type name 'int_fast16_t'
+  211 | typedef _Atomic(int_fast16_t)           atomic_int_fast16_t;
+      |                 ^~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:212:17: error: unknown type name 'uint_fast16_t'; did you mean 'atomic_int_fast16_t'?
+  212 | typedef _Atomic(uint_fast16_t)          atomic_uint_fast16_t;
+      |                 ^~~~~~~~~~~~~
+      |                 atomic_int_fast16_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:213:17: error: unknown type name 'int_fast32_t'
+  213 | typedef _Atomic(int_fast32_t)           atomic_int_fast32_t;
+      |                 ^~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:214:17: error: unknown type name 'uint_fast32_t'; did you mean 'atomic_int_fast32_t'?
+  214 | typedef _Atomic(uint_fast32_t)          atomic_uint_fast32_t;
+      |                 ^~~~~~~~~~~~~
+      |                 atomic_int_fast32_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:215:17: error: unknown type name 'int_fast64_t'
+  215 | typedef _Atomic(int_fast64_t)           atomic_int_fast64_t;
+      |                 ^~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:216:17: error: unknown type name 'uint_fast64_t'; did you mean 'atomic_int_fast64_t'?
+  216 | typedef _Atomic(uint_fast64_t)          atomic_uint_fast64_t;
+      |                 ^~~~~~~~~~~~~
+      |                 atomic_int_fast64_t
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:217:17: error: unknown type name 'intptr_t'
+  217 | typedef _Atomic(intptr_t)               atomic_intptr_t;
+      |                 ^~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:35:1: note: 'intptr_t' is defined in header '<stdint.h>'; this is probably fixable by adding '#include <stdint.h>'
+   34 | #include <sys/_types.h>
+  +++ |+#include <stdint.h>
+   35 | 
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:218:17: error: unknown type name 'uintptr_t'
+  218 | typedef _Atomic(uintptr_t)              atomic_uintptr_t;
+      |                 ^~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:218:17: note: 'uintptr_t' is defined in header '<stdint.h>'; this is probably fixable by adding '#include <stdint.h>'
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:221:17: error: unknown type name 'intmax_t'
+  221 | typedef _Atomic(intmax_t)               atomic_intmax_t;
+      |                 ^~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:222:17: error: unknown type name 'uintmax_t'
+  222 | typedef _Atomic(uintmax_t)              atomic_uintmax_t;
+      |                 ^~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_test_and_set_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:242:9: error: implicit declaration of function '__c11_atomic_exchange'; did you mean '__atomic_exchange'? [-Wimplicit-function-declaration]
+  242 |         __c11_atomic_exchange(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:382:17: note: in expansion of macro 'atomic_exchange_explicit'
+  382 |         return (atomic_exchange_explicit(&__object->__flag, 1, __order));
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_clear_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:256:9: error: implicit declaration of function '__c11_atomic_store'; did you mean '__atomic_store'? [-Wimplicit-function-declaration]
+  256 |         __c11_atomic_store(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:389:9: note: in expansion of macro 'atomic_store_explicit'
+  389 |         atomic_store_explicit(&__object->__flag, 0, __order);
+      |         ^~~~~~~~~~~~~~~~~~~~~
+[5/1351] Building C object esp-idf/esp_driver_twai/CMakeFiles/__idf_esp_driver_twai.dir/esp_twai_onchip.c.obj
+FAILED: [code=1] esp-idf/esp_driver_twai/CMakeFiles/__idf_esp_driver_twai.dir/esp_twai_onchip.c.obj 
+/Users/panpoming/esp/esp-idf/tools/tools/xtensa-esp-elf/esp-15.1.0_20250607/xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc -DESP_PLATFORM -DIDF_VER=\"v6.0-dev-2039-g2044fba6e7\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE -DSOC_XTAL_FREQ_MHZ=CONFIG_XTAL_FREQ -D_GLIBCXX_HAVE_POSIX_SEMAPHORE -D_GLIBCXX_USE_POSIX_SEMAPHORE -D_GNU_SOURCE -D_POSIX_READER_WRITER_LOCKS -I/Users/panpoming/Documents/rabbit/build/config -I/Users/panpoming/esp/esp-idf/components/esp_driver_twai/include -I/Users/panpoming/esp/esp-idf/components/newlib/platform_include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/config/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/esp_additions/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/dma/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/ldo/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/debug_probe/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/etm/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/tuning_scheme_impl/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/power_supply/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/heap/include -I/Users/panpoming/esp/esp-idf/components/heap/tlsf -I/Users/panpoming/esp/esp-idf/components/log/include -I/Users/panpoming/esp/esp-idf/components/soc/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/register -I/Users/panpoming/esp/esp-idf/components/hal/platform_port/include -I/Users/panpoming/esp/esp-idf/components/hal/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/hal/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_common/include -I/Users/panpoming/esp/esp-idf/components/esp_system/include -I/Users/panpoming/esp/esp-idf/components/esp_system/port/soc -I/Users/panpoming/esp/esp-idf/components/esp_system/port/include/private -I/Users/panpoming/esp/esp-idf/components/xtensa/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/xtensa/include -I/Users/panpoming/esp/esp-idf/components/xtensa/deprecated_include -I/Users/panpoming/esp/esp-idf/components/lwip/include -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps/sntp -I/Users/panpoming/esp/esp-idf/components/lwip/lwip/src/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/freertos/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/arch -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/sys -I/Users/panpoming/esp/esp-idf/components/esp_driver_gpio/include -I/Users/panpoming/esp/esp-idf/components/esp_pm/include -mlongcalls -fno-builtin-memcpy -fno-builtin-memset -fno-builtin-bzero  -fdiagnostics-color=always -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-error=extra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fno-shrink-wrap -fmacro-prefix-map=/Users/panpoming/Documents/rabbit=. -fmacro-prefix-map=/Users/panpoming/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -std=gnu23 -Wno-old-style-declaration -fzero-init-padding-bits=all -fno-malloc-dce -MD -MT esp-idf/esp_driver_twai/CMakeFiles/__idf_esp_driver_twai.dir/esp_twai_onchip.c.obj -MF esp-idf/esp_driver_twai/CMakeFiles/__idf_esp_driver_twai.dir/esp_twai_onchip.c.obj.d -o esp-idf/esp_driver_twai/CMakeFiles/__idf_esp_driver_twai.dir/esp_twai_onchip.c.obj -c /Users/panpoming/esp/esp-idf/components/esp_driver_twai/esp_twai_onchip.c
+In file included from /Users/panpoming/esp/esp-idf/components/newlib/platform_include/stdatomic.h:7,
+                 from /Users/panpoming/esp/esp-idf/components/esp_driver_twai/twai_private.h:13,
+                 from /Users/panpoming/esp/esp-idf/components/esp_driver_twai/esp_twai_onchip.c:11:
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_thread_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:143:9: error: implicit declaration of function '__c11_atomic_thread_fence'; did you mean '__atomic_thread_fence'? [-Wimplicit-function-declaration]
+  143 |         __c11_atomic_thread_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_thread_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_signal_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:156:9: error: implicit declaration of function '__c11_atomic_signal_fence'; did you mean '__atomic_signal_fence'? [-Wimplicit-function-declaration]
+  156 |         __c11_atomic_signal_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_signal_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_test_and_set_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:242:9: error: implicit declaration of function '__c11_atomic_exchange'; did you mean '__atomic_exchange'? [-Wimplicit-function-declaration]
+  242 |         __c11_atomic_exchange(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:382:17: note: in expansion of macro 'atomic_exchange_explicit'
+  382 |         return (atomic_exchange_explicit(&__object->__flag, 1, __order));
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_clear_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:256:9: error: implicit declaration of function '__c11_atomic_store'; did you mean '__atomic_store'? [-Wimplicit-function-declaration]
+  256 |         __c11_atomic_store(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:389:9: note: in expansion of macro 'atomic_store_explicit'
+  389 |         atomic_store_explicit(&__object->__flag, 0, __order);
+      |         ^~~~~~~~~~~~~~~~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_driver_twai/esp_twai_onchip.c: In function '_node_isr_main':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:254:9: error: implicit declaration of function '__c11_atomic_load'; did you mean '__atomic_load'? [-Wimplicit-function-declaration]
+  254 |         __c11_atomic_load(object, order)
+      |         ^~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:361:9: note: in expansion of macro 'atomic_load_explicit'
+  361 |         atomic_load_explicit(object, memory_order_seq_cst)
+      |         ^~~~~~~~~~~~~~~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_driver_twai/esp_twai_onchip.c:287:14: note: in expansion of macro 'atomic_load'
+  287 |         if ((atomic_load(&twai_ctx->state) != TWAI_ERROR_BUS_OFF) && xQueueReceiveFromISR(twai_ctx->tx_mount_queue, &twai_ctx->p_curr_tx, &do_yield)) {
+      |              ^~~~~~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_driver_twai/esp_twai_onchip.c: In function '_node_queue_tx':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:235:9: error: implicit declaration of function '__c11_atomic_compare_exchange_strong'; did you mean 'atomic_compare_exchange_strong'? [-Wimplicit-function-declaration]
+  235 |         __c11_atomic_compare_exchange_strong(object, expected, desired, \
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:343:9: note: in expansion of macro 'atomic_compare_exchange_strong_explicit'
+  343 |         atomic_compare_exchange_strong_explicit(object, expected,       \
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_driver_twai/esp_twai_onchip.c:601:9: note: in expansion of macro 'atomic_compare_exchange_strong'
+  601 |     if (atomic_compare_exchange_strong(&twai_ctx->hw_busy, &false_var, true)) {
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[6/1351] Building C object esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_oneshot.c.obj
+FAILED: [code=1] esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_oneshot.c.obj 
+/Users/panpoming/esp/esp-idf/tools/tools/xtensa-esp-elf/esp-15.1.0_20250607/xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc -DESP_PLATFORM -DIDF_VER=\"v6.0-dev-2039-g2044fba6e7\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE -DSOC_XTAL_FREQ_MHZ=CONFIG_XTAL_FREQ -D_GLIBCXX_HAVE_POSIX_SEMAPHORE -D_GLIBCXX_USE_POSIX_SEMAPHORE -D_GNU_SOURCE -D_POSIX_READER_WRITER_LOCKS -I/Users/panpoming/Documents/rabbit/build/config -I/Users/panpoming/esp/esp-idf/components/esp_adc/include -I/Users/panpoming/esp/esp-idf/components/esp_adc/interface -I/Users/panpoming/esp/esp-idf/components/esp_adc/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/newlib/platform_include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/config/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/esp_additions/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/dma/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/ldo/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/debug_probe/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/etm/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/tuning_scheme_impl/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/power_supply/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/heap/include -I/Users/panpoming/esp/esp-idf/components/heap/tlsf -I/Users/panpoming/esp/esp-idf/components/log/include -I/Users/panpoming/esp/esp-idf/components/soc/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/register -I/Users/panpoming/esp/esp-idf/components/hal/platform_port/include -I/Users/panpoming/esp/esp-idf/components/hal/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/hal/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_common/include -I/Users/panpoming/esp/esp-idf/components/esp_system/include -I/Users/panpoming/esp/esp-idf/components/esp_system/port/soc -I/Users/panpoming/esp/esp-idf/components/esp_system/port/include/private -I/Users/panpoming/esp/esp-idf/components/xtensa/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/xtensa/include -I/Users/panpoming/esp/esp-idf/components/xtensa/deprecated_include -I/Users/panpoming/esp/esp-idf/components/lwip/include -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps/sntp -I/Users/panpoming/esp/esp-idf/components/lwip/lwip/src/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/freertos/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/arch -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/sys -I/Users/panpoming/esp/esp-idf/components/esp_driver_gpio/include -I/Users/panpoming/esp/esp-idf/components/efuse/include -I/Users/panpoming/esp/esp-idf/components/efuse/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_pm/include -I/Users/panpoming/esp/esp-idf/components/esp_ringbuf/include -I/Users/panpoming/esp/esp-idf/components/esp_mm/include -mlongcalls -fno-builtin-memcpy -fno-builtin-memset -fno-builtin-bzero  -fdiagnostics-color=always -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-error=extra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fno-shrink-wrap -fmacro-prefix-map=/Users/panpoming/Documents/rabbit=. -fmacro-prefix-map=/Users/panpoming/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -std=gnu23 -Wno-old-style-declaration -fzero-init-padding-bits=all -fno-malloc-dce -MD -MT esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_oneshot.c.obj -MF esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_oneshot.c.obj.d -o esp-idf/esp_adc/CMakeFiles/__idf_esp_adc.dir/adc_oneshot.c.obj -c /Users/panpoming/esp/esp-idf/components/esp_adc/adc_oneshot.c
+In file included from /Users/panpoming/esp/esp-idf/components/newlib/platform_include/stdatomic.h:7,
+                 from /Users/panpoming/esp/esp-idf/components/esp_adc/adc_oneshot.c:15:
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_thread_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:143:9: error: implicit declaration of function '__c11_atomic_thread_fence'; did you mean '__atomic_thread_fence'? [-Wimplicit-function-declaration]
+  143 |         __c11_atomic_thread_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_thread_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_signal_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:156:9: error: implicit declaration of function '__c11_atomic_signal_fence'; did you mean '__atomic_signal_fence'? [-Wimplicit-function-declaration]
+  156 |         __c11_atomic_signal_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_signal_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_test_and_set_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:242:9: error: implicit declaration of function '__c11_atomic_exchange'; did you mean '__atomic_exchange'? [-Wimplicit-function-declaration]
+  242 |         __c11_atomic_exchange(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:382:17: note: in expansion of macro 'atomic_exchange_explicit'
+  382 |         return (atomic_exchange_explicit(&__object->__flag, 1, __order));
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_clear_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:256:9: error: implicit declaration of function '__c11_atomic_store'; did you mean '__atomic_store'? [-Wimplicit-function-declaration]
+  256 |         __c11_atomic_store(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:389:9: note: in expansion of macro 'atomic_store_explicit'
+  389 |         atomic_store_explicit(&__object->__flag, 0, __order);
+      |         ^~~~~~~~~~~~~~~~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_adc/adc_oneshot.c: In function 's_adc_unit_claim':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:235:9: error: implicit declaration of function '__c11_atomic_compare_exchange_strong'; did you mean 'atomic_compare_exchange_strong'? [-Wimplicit-function-declaration]
+  235 |         __c11_atomic_compare_exchange_strong(object, expected, desired, \
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:343:9: note: in expansion of macro 'atomic_compare_exchange_strong_explicit'
+  343 |         atomic_compare_exchange_strong_explicit(object, expected,       \
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_adc/adc_oneshot.c:351:12: note: in expansion of macro 'atomic_compare_exchange_strong'
+  351 |     return atomic_compare_exchange_strong(&s_adc_unit_claimed[unit], &false_var, true);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[7/1351] Building C object esp-idf/esp_driver_i2c/CMakeFiles/__idf_esp_driver_i2c.dir/i2c_master.c.obj
+FAILED: [code=1] esp-idf/esp_driver_i2c/CMakeFiles/__idf_esp_driver_i2c.dir/i2c_master.c.obj 
+/Users/panpoming/esp/esp-idf/tools/tools/xtensa-esp-elf/esp-15.1.0_20250607/xtensa-esp-elf/bin/xtensa-esp32s3-elf-gcc -DESP_PLATFORM -DIDF_VER=\"v6.0-dev-2039-g2044fba6e7\" -DSOC_MMU_PAGE_SIZE=CONFIG_MMU_PAGE_SIZE -DSOC_XTAL_FREQ_MHZ=CONFIG_XTAL_FREQ -D_GLIBCXX_HAVE_POSIX_SEMAPHORE -D_GLIBCXX_USE_POSIX_SEMAPHORE -D_GNU_SOURCE -D_POSIX_READER_WRITER_LOCKS -I/Users/panpoming/Documents/rabbit/build/config -I/Users/panpoming/esp/esp-idf/components/esp_driver_i2c/include -I/Users/panpoming/esp/esp-idf/components/newlib/platform_include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include -I/Users/panpoming/esp/esp-idf/components/freertos/config/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/config/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include -I/Users/panpoming/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/include/freertos -I/Users/panpoming/esp/esp-idf/components/freertos/esp_additions/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/dma/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/ldo/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/debug_probe/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/etm/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/tuning_scheme_impl/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/power_supply/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/include/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/. -I/Users/panpoming/esp/esp-idf/components/esp_hw_support/mspi_timing_tuning/port/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/heap/include -I/Users/panpoming/esp/esp-idf/components/heap/tlsf -I/Users/panpoming/esp/esp-idf/components/log/include -I/Users/panpoming/esp/esp-idf/components/soc/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3 -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/soc/esp32s3/register -I/Users/panpoming/esp/esp-idf/components/hal/platform_port/include -I/Users/panpoming/esp/esp-idf/components/hal/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/hal/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3/include/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_rom/esp32s3 -I/Users/panpoming/esp/esp-idf/components/esp_common/include -I/Users/panpoming/esp/esp-idf/components/esp_system/include -I/Users/panpoming/esp/esp-idf/components/esp_system/port/soc -I/Users/panpoming/esp/esp-idf/components/esp_system/port/include/private -I/Users/panpoming/esp/esp-idf/components/xtensa/esp32s3/include -I/Users/panpoming/esp/esp-idf/components/xtensa/include -I/Users/panpoming/esp/esp-idf/components/xtensa/deprecated_include -I/Users/panpoming/esp/esp-idf/components/lwip/include -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps -I/Users/panpoming/esp/esp-idf/components/lwip/include/apps/sntp -I/Users/panpoming/esp/esp-idf/components/lwip/lwip/src/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/freertos/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/arch -I/Users/panpoming/esp/esp-idf/components/lwip/port/esp32xx/include/sys -I/Users/panpoming/esp/esp-idf/components/esp_driver_gpio/include -I/Users/panpoming/esp/esp-idf/components/esp_pm/include -I/Users/panpoming/esp/esp-idf/components/esp_ringbuf/include -mlongcalls -fno-builtin-memcpy -fno-builtin-memset -fno-builtin-bzero  -fdiagnostics-color=always -fdiagnostics-color=always -ffunction-sections -fdata-sections -Wall -Werror=all -Wno-error=unused-function -Wno-error=unused-variable -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wextra -Wno-error=extra -Wno-unused-parameter -Wno-sign-compare -Wno-enum-conversion -gdwarf-4 -ggdb -Og -fno-shrink-wrap -fmacro-prefix-map=/Users/panpoming/Documents/rabbit=. -fmacro-prefix-map=/Users/panpoming/esp/esp-idf=/IDF -fstrict-volatile-bitfields -fno-jump-tables -fno-tree-switch-conversion -std=gnu23 -Wno-old-style-declaration -fzero-init-padding-bits=all -fno-malloc-dce -MD -MT esp-idf/esp_driver_i2c/CMakeFiles/__idf_esp_driver_i2c.dir/i2c_master.c.obj -MF esp-idf/esp_driver_i2c/CMakeFiles/__idf_esp_driver_i2c.dir/i2c_master.c.obj.d -o esp-idf/esp_driver_i2c/CMakeFiles/__idf_esp_driver_i2c.dir/i2c_master.c.obj -c /Users/panpoming/esp/esp-idf/components/esp_driver_i2c/i2c_master.c
+In file included from /Users/panpoming/esp/esp-idf/components/newlib/platform_include/stdatomic.h:7,
+                 from /Users/panpoming/esp/esp-idf/components/esp_driver_i2c/i2c_private.h:10,
+                 from /Users/panpoming/esp/esp-idf/components/esp_driver_i2c/i2c_master.c:29:
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_thread_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:143:9: error: implicit declaration of function '__c11_atomic_thread_fence'; did you mean '__atomic_thread_fence'? [-Wimplicit-function-declaration]
+  143 |         __c11_atomic_thread_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_thread_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_signal_fence':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:156:9: error: implicit declaration of function '__c11_atomic_signal_fence'; did you mean '__atomic_signal_fence'? [-Wimplicit-function-declaration]
+  156 |         __c11_atomic_signal_fence(__order);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         __atomic_signal_fence
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_test_and_set_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:242:9: error: implicit declaration of function '__c11_atomic_exchange'; did you mean '__atomic_exchange'? [-Wimplicit-function-declaration]
+  242 |         __c11_atomic_exchange(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:382:17: note: in expansion of macro 'atomic_exchange_explicit'
+  382 |         return (atomic_exchange_explicit(&__object->__flag, 1, __order));
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h: In function 'atomic_flag_clear_explicit':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:256:9: error: implicit declaration of function '__c11_atomic_store'; did you mean '__atomic_store'? [-Wimplicit-function-declaration]
+  256 |         __c11_atomic_store(object, desired, order)
+      |         ^~~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:389:9: note: in expansion of macro 'atomic_store_explicit'
+  389 |         atomic_store_explicit(&__object->__flag, 0, __order);
+      |         ^~~~~~~~~~~~~~~~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_driver_i2c/i2c_master.c: In function 's_i2c_send_commands':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:254:9: error: implicit declaration of function '__c11_atomic_load'; did you mean '__atomic_load'? [-Wimplicit-function-declaration]
+  254 |         __c11_atomic_load(object, order)
+      |         ^~~~~~~~~~~~~~~~~
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:361:9: note: in expansion of macro 'atomic_load_explicit'
+  361 |         atomic_load_explicit(object, memory_order_seq_cst)
+      |         ^~~~~~~~~~~~~~~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_driver_i2c/i2c_master.c:550:13: note: in expansion of macro 'atomic_load'
+  550 |         if (atomic_load(&i2c_master->status) == I2C_STATUS_TIMEOUT) {
+      |             ^~~~~~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_driver_i2c/i2c_master.c: In function 's_i2c_transaction_start':
+/Applications/ArmGNUToolchain/13.3.rel1/arm-none-eabi/arm-none-eabi/include/stdatomic.h:87:41: error: implicit declaration of function '__c11_atomic_init'; did you mean 'atomic_init'? [-Wimplicit-function-declaration]
+   87 | #define atomic_init(obj, value)         __c11_atomic_init(obj, value)
+      |                                         ^~~~~~~~~~~~~~~~~
+/Users/panpoming/esp/esp-idf/components/esp_driver_i2c/i2c_master.c:677:5: note: in expansion of macro 'atomic_init'
+  677 |     atomic_init(&i2c_master->trans_idx, 0);
+      |     ^~~~~~~~~~~
+[8/1351] Building C object esp-idf/driver/CMakeFiles/__idf_driver.dir/twai/twai.c.obj
+[9/1351] Building C object esp-idf/driver/CMakeFiles/__idf_driver.dir/touch_sensor/esp32s3/touch_sensor.c.obj
+[10/1351] Building C object esp-idf/esp_driver_ledc/CMakeFiles/__idf_esp_driver_ledc.dir/src/ledc.c.obj
+ninja: build stopped: subcommand failed.
+ninja failed with exit code 1, output of the command is in the /Users/panpoming/Documents/rabbit/build/log/idf_py_stderr_output_19650 and /Users/panpoming/Documents/rabbit/build/log/idf_py_stdout_output_19650
