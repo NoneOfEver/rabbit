@@ -48,7 +48,7 @@ enum
 };
 uint8_t g_ble_recive_flag = 0; // 标志位，表示是否收到数据
 
-static const uint16_t GATTS_SERVICE_UUID_TEST       = 0x18FF;   //自定义服务1
+static const uint16_t GATTS_SERVICE_UUID_TEST       = 0x18FC;   //自定义服务1
 static const uint16_t GATTS_CHAR_UUID_CH1           = 0x2AFE;   //特征1 UUID
 static const uint16_t GATTS_CHAR_UUID_CH2           = 0x2AFF;   //特征2 UUID
 

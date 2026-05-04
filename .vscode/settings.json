@@ -3,5 +3,6 @@
     "git.ignoreLimitWarning": true,
     "idf.flashType": "UART",
     "idf.pythonInstallPath": "/opt/homebrew/opt/python/libexec/bin/python",
-    "editor.fontSize": 18
+    "editor.fontSize": 18,
+    "idf.currentSetup": "/Users/panpoming/esp/esp-idf/"
 }

@@ -1,32 +1,171 @@
-# _Sample project_
+Rabbit — ESP-IDF 项目
+=====================
 
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
+简要说明
+--
+这是一个基于 ESP-IDF 的嵌入式项目（仓库名：rabbit）。项目实现了多种外设与功能模块，例如 BLE、马达控制、脉冲计数、RTC、SD 卡读写与 RGB LED 控制。主应用代码位于 `main/` 目录，项目使用 CMake 与 `idf.py` 构建系统。
 
-This is the simplest buildable example. The example is used by command `idf.py create-project`
-that copies the project to user specified path and set it's name. For more information follow the [docs page](https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#start-a-new-project)
+项目简介 — 周期性骨搬移低功耗控制系统
+--
+设计并实现一套面向周期性骨搬移的低功耗精密驱动系统，实现亚毫米级位移控制与长续航运行能力。系统基于高减速比丝杠式直流电机构建精密执行机构，通过建立电机驱动与位移映射模型，实现约 0.02 mm 级滑块运动分辨率，并优化低速段控制策略以降低抖动与过冲；基于 ESP32-S3 构建嵌入式控制系统，实现周期性控制任务调度与稳定闭环执行。
+
+主要性能目标（估算）
+--
+- 位置控制误差： 0.03 mm（基于丝杠机械传动回差与闭环控制误差估算）
+- 重复定位精度： 0.02 mm（在相同运动起始条件下的典型重复定位误差）
+- 单节 21700 电池连续运行时间：约 168 h（约 1 周，按 18.5 Wh 容量与平均功耗估算）
+- 平均功耗：约 110 mW（估算值，包含控制器、传感、BLE 与驱动的平均能耗）
+- 通信延迟（BLE）：约 30 ms（单向，视连接参数与 PHY 而定）
+- 数据更新频率：5 Hz（默认遥测/状态上报频率，可根据功耗/实时性折中调整）
+
+设计要点
+--
+- 精密执行机构：高减速比丝杠 + 直流电机，目标实现亚毫米级位移控制
+- 控制策略：建立电机驱动与位移映射模型，实现 0.02 mm 级分辨率，并在低速段采用专门的抑振与减冲策略
+- 低功耗方案：多级电源管理（运行 / 空闲 / 休眠）与控制周期优化，配合 BLE 低功耗通信
+- 嵌入式平台：ESP32-S3 实现实时控制、周期性任务调度与状态上报
+- 远程监测：设备运行状态与电池信息通过 BLE 回传，支持远程监测与告警
 
 
+主要功能
+--
+- BLE（蓝牙低功耗）
+- 马达控制（motor）
+- 脉冲计数器（pulse_counter）
+- 实时时钟（RTC）
+- SD 卡读写
+- RGB LED 控制
 
-## How to use example
-We encourage the users to use the example as a template for the new projects.
-A recommended way is to follow the instructions on a [docs page](https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/build-system.html#start-a-new-project).
+仓库结构（要点）
+--
+- `CMakeLists.txt`：顶层 CMake 构建脚本
+- `main/`：主应用源代码（如 `ble.c`、`motor.c`、`rtc.c`、`sd_card.c` 等）
+- `components/`：本地组件
+- `managed_components/`：托管或引入的第三方组件
+- `esp-idf/`：仓库内的 IDF 相关目录（若 vendored）
+- `sdkconfig`：构建配置
+- `python_env/`：推荐的 Python 虚拟环境（示例 `idf_py3.13`）
 
-## Example folder contents
+依赖与要求
+--
+- ESP-IDF：请使用与项目兼容的 ESP-IDF 版本（仓库中包含 IDF 相关目录，请根据需要使用或安装对应版本）。
+- 目标硬件：ESP32-S3（仓库中含有针对 esp32s3 的相关文件）。
+- Python 与构建工具：`python`、`idf.py`、`CMake`、`Ninja`。
 
-The project **sample_project** contains one source file in C language [main.c](main/main.c). The file is located in folder [main](main).
+快速开始（开发者）
+--
+1. 激活 Python 环境（若仓库提供虚拟环境）：
 
-ESP-IDF projects are built using CMake. The project build configuration is contained in `CMakeLists.txt`
-files that provide set of directives and instructions describing the project's source files and targets
-(executable, library, or both). 
+   ```bash
+   source python_env/idf_py3.13/bin/activate
+   ```
 
-Below is short explanation of remaining files in the project folder.
+2. 导出 ESP-IDF 环境（若使用系统安装的 ESP-IDF）：
 
+   ```bash
+   . $HOME/esp/esp-idf/export.sh
+   ```
+
+3. 配置（可选）：
+
+   ```bash
+   idf.py menuconfig
+   ```
+
+4. 构建：
+
+   ```bash
+   idf.py build
+   ```
+
+5. 烧录与监视：
+
+   ```bash
+   idf.py -p /dev/ttyUSB0 flash monitor
+   ```
+
+   将 `/dev/ttyUSB0` 替换为你的设备串口（macOS 常见为 `/dev/tty.usbserial-xxxx` 或 `/dev/tty.SLAB_USBtoUART`）。
+
+代码结构与说明
+--
+- `main/ble.c`、`main/ble.h`：BLE 功能实现
+- `main/motor.c`、`main/motor.h`：马达控制
+- `main/pulse_counter.c`、`main/pulse_counter.h`：脉冲计数
+- `main/rtc.c`、`main/rtc.h`：RTC 管理
+- `main/sd_card.c`、`main/sd_card.h`：SD 卡接口
+- `main/rgb_led.c`、`main/rgb_led.h`：RGB LED 驱动
+- `main/cmd_storage.c`：命令与存储相关辅助功能
+
+组件与依赖
+--
+- `components/`：本地组件（项目定制）
+- `managed_components/`：第三方 / 托管组件（例如 `esp-idf-lib` 系列）
+
+调试与日志
+--
+- 使用 `idf.py monitor` 查看串口日志，按 `Ctrl+]` 退出。
+- 如果需要更高日志级别或异常转储，请通过 `menuconfig` 或 `sdkconfig` 调整。
+
+常见问题与排查
+--
+- 构建失败：确认已激活 Python 虚拟环境并正确导出 ESP-IDF 环境变量。
+- 找不到串口：在 macOS 上运行 `ls /dev/tty.*` 查找可用设备。
+
+贡献与联系
+--
+- 欢迎提出 Issue 或 PR。提交前请确保代码可编译并包含必要说明。
+- 如果希望我进一步完善 README（例如添加使用示例、API 文档、CI 流程、英文版或徽章），请告诉我具体需求。
+
+版权与许可
+--
+请在仓库中添加或确认 LICENSE 文件以说明项目许可信息。
+
+——
+此 README 为基于仓库当前结构的自动草稿。需要我把 README 翻译为英文、加入示例截图或补充每个模块的 API 文档吗？
+
+估算依据与计算方法
+--
+以下估算基于典型机械与电子元件参数、经验性能耗分配以及常见 BLE 连接参数：
+
+- 位置误差与重复精度：考虑丝杠传动的线性分辨率、丝杠导程、公差与电机编码器/闭环传感器分辨率、控制环带宽与量化噪声。0.02 mm 级重复精度为在相同起始条件下的保守估算，0.03 mm 的控制误差包含系统机械回差与控制环稳态误差。
+- 电池续航估算：以 21700 电池典型可用能量 18.5 Wh 为基准，运行时间（小时） = 电池能量（Wh） ÷ 平均功耗（W）。例如 18.5 Wh ÷ 0.11 W ≈ 168 h（约 1 周）。
+- 平均功耗分配（估算）：控制器（ESP32-S3）与外设常驻功耗、传感采样与数据传输导致的周期性功耗、以及驱动器在空载/运行切换带来的平均值。
+- BLE 延迟与更新率：以连接间隔、MTU 与连接参数为参考估计，单向延迟约在几十毫秒级别，更新频率与功耗直接相关。
+
+测试与验证（建议流程）
+--
+1. 位置精度与重复性
+   - 准备：在滑块上安装高精度位移传感（例如光栅尺或高精度线性位移传感器），并准备记录命令位置与测量位置的同步数据（CSV）。
+   - 步骤：执行 N 次往返小步（例如步长 0.02 mm、N=50），记录每次到达稳态后的测量值。
+   - 指标：计算均方根误差（RMSE）、平均绝对误差（MAE）、最大绝对误差与标准差。
+
+2. 抖动与过冲测试
+   - 在低速段执行慢速阶跃或速度曲线，使用传感器记录过冲峰值与振荡能量，调整低速 PID / 前馈 /速度剖面以降低抖动。
+
+3. 功耗与续航测试
+   - 使用精确功耗计（或带电流传感器的电源）记录在典型工作循环下的平均功耗。
+   - 使用 `tools/energy_estimate.py` 验算电池续航（见下）。实测运行时间用于校正估算模型。
+
+4. 通信与延迟
+   - 在 BLE 连接下测量从设备发送状态到接收端确认的端到端时间，统计平均延迟与分位数，结合更新频率评估实时性。
+
+测量脚本（仓库附件）
+--
+- `tools/energy_estimate.py`：估算电池续航的简单脚本，输入电池容量（Wh）与平均功耗（mW），输出估算小时数与示例运行命令。
+- `tools/position_analysis.py`：处理 CSV 文件（列：timestamp, commanded_mm, measured_mm），计算 RMSE、MAE、最大误差与标准差，并输出报告。
+
+使用示例
+--
+运行能耗估算：
+
+```bash
+python3 tools/energy_estimate.py --capacity-wh 18.5 --avg-power-mw 110
 ```
-├── CMakeLists.txt
-├── main
-│   ├── CMakeLists.txt
-│   └── main.c
-└── README.md                  This is the file you are currently reading
+
+位置误差分析示例（CSV 第一行为表头）：
+
+```bash
+python3 tools/position_analysis.py data/position_log.csv
 ```
-Additionally, the sample project contains Makefile and component.mk files, used for the legacy Make based build system. 
-They are not used or needed when building with CMake and idf.py.
+
+如需我将测试模板（例如用于记录的 CSV 模板、监控脚本或示例测量流程文档）也加入仓库，我可以继续添加。
